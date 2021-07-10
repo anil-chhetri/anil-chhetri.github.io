@@ -1,0 +1,73 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title> Anil Kumar Chhetri </title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div id='loading'>
+        <img src="https://i.gifer.com/origin/d3/d3f472b06590a25cb4372ff289d81711_w200.webp" alt="">
+    </div>
+    <div class="container" id="main" hidden>
+
+        <div class="headingcontainer">
+            <h1>
+                Anil Kumar Chhetri
+            </h1>
+            <span>Data Science and Machine learning enthusiastic</span>
+        </div>
+
+
+        <!-- projects -->
+        <div class="projects">
+            <h2> List of My projects in Github.</h2>
+            <ul id="project-list">
+
+            </ul>
+        </div>
+
+
+    </div>
+
+
+</body>
+
+<script>
+    fetch('https://api.github.com/users/anil-chhetri')
+        .then(response => response.json())
+        .then(function (data) {
+            console.log(data)
+            ul = document.getElementById('project-list')
+            fetch(data['repos_url'])
+                .then(response => response.json())
+                .then(function (repo) {
+                    console.log(repo)
+                    for (let i = 0; i < repo['length']; i++) {
+                        if (!repo[i]['fork']) {
+                            li = document.createElement('li')
+                            li.appendChild(document.createTextNode(repo[i]['name']))
+                            a = document.createElement('a')
+                            a.href = repo[i]['html_url']
+                            a.target = '_blank'
+                            a.appendChild(document.createTextNode('  Click here for more....'))
+                            li.appendChild(a)
+                            ul.appendChild(li)
+                        }
+
+                    }
+                })
+        }
+        );
+        document.getElementById('main').hidden = false
+        document.getElementById('loading').hidden = true
+
+</script>
+
+</html>
