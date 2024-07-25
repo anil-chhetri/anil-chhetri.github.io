@@ -1,0 +1,148 @@
+body {
+    background-color: #d5d6d4; /* Very Light Gray Background */
+    color: #2C3E50; /* Dark Slate Text */
+    font-family: Arial, sans-serif;
+    line-height: 1.6; /* Improved line height for readability */
+}
+
+body {
+    background-color: #f8f9fa; /* Light background color */
+    font-family: 'Arial', sans-serif; /* Use a clean font */
+}
+
+.navbar {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add subtle shadow */
+}
+
+.breadcrumb {
+    background-color: transparent; /* Make breadcrumb background transparent */
+}
+
+.post-content {
+    background-color: #fff; /* White background for post content */
+    padding: 20px; /* Add padding */
+    border-radius: 5px; /* Rounded corners */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+footer {
+    border-top: 1px solid #dee2e6; /* Add a top border */
+}
+
+#go-to-top {
+    transition: background-color 0.3s; /* Smooth transition for hover */
+}
+
+#go-to-top:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+h1, h2, h3 {
+    color: #343a40; /* Darker text color for headings */
+}
+
+p {
+    line-height: 1.6; /* Improve readability with line height */
+}
+
+
+/* Paragraph Font Styling */
+.post-content p, li {
+    font-size: 1.25rem; /* Increase the font size for paragraphs */
+    margin-bottom: 1rem; /* Space between paragraphs */
+    color: #555; /* Change the color */
+}
+
+.navbar {
+    background-color: #2980B9; /* Soft Blue */
+}
+
+.navbar-brand {
+    color: #FFFFFF; /* White Text */
+}
+
+.card {
+    border: none;
+}
+
+.card-body {
+    background-color: #FFFFFF; /* White Card Background */
+}
+
+.card-title a {
+    color: #2980B9; /* Soft Blue Links */
+    text-decoration: none;
+}
+
+.card-title a:hover {
+    text-decoration: underline; /* Underline on Hover */
+}
+
+footer {
+    background-color: #EAEAEA; /* Light Gray Footer */
+    color: #2C3E50; /* Dark Slate Footer Text */
+}
+
+.btn-primary {
+    background-color: #3498DB; /* Bright Blue Button Color */
+    border-color: #2980B9; /* Soft Blue Border Color */
+}
+
+.btn-primary:hover {
+    background-color: #2980B9; /* Darker Blue on Hover */
+}
+
+.btn-success {
+    background-color: #2ECC71; /* Soft Green Thumbs Up */
+}
+
+.btn-danger {
+    background-color: #E74C3C; /* Soft Red Thumbs Down */
+}
+
+/* Go to Top Button */
+#go-to-top {
+    background-color: #3498DB; /* Bright Blue */
+    border-color: #2980B9;
+}
+.card-header {
+    transition: transform 0.2s; /* Smooth transformation */
+    font-size: 2.5rem; /* Increase the font size for headers */
+    font-weight: bold; /* Make the header bold */
+    color: #333; /* Change the color */
+    margin-bottom: 2rem; /* Space below the header */
+}
+
+.card:hover {
+    transform: scale(1); /* Slightly enlarge the card on hover */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); /* Add shadow on hover */
+}
+
+
+pre {
+    position: relative;
+    background-color: #f8f9fa; /* Bootstrap's light background */
+    border: 1px solid #ced4da; /* Bootstrap's border color */
+    border-radius: 0.25rem; /* Bootstrap's border radius */
+    padding: 1rem; /* Bootstrap's padding */
+    overflow: auto;
+}
+
+.copy-button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.copy-button:hover {
+    background-color: #0056b3;
+}
+
+
+
