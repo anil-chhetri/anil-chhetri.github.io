@@ -763,8 +763,15 @@
             startY = e.clientY;
         });
 
+        let idleSpeed = 0.1; // small auto rotation
+
         function animate() {
+
             if (!isDragging) {
+                // auto rotate slowly
+                rotationY += idleSpeed;
+
+                // inertia (if any)
                 velocityX *= 0.95;
                 velocityY *= 0.95;
 
@@ -780,7 +787,7 @@
             requestAnimationFrame(animate);
         }
 
-        animate()
+        animate();
 
 
     </script>
