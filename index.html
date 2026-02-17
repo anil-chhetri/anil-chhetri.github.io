@@ -110,31 +110,17 @@
             border-color: #22d3ee;
         }
 
-        /* ============================= */
-        /*        3D Cube System         */
-        /* ============================= */
-
-        .scene {
-            --cube-size: clamp(200px, 28vw, 320px);
-            width: var(--cube-size);
-            height: var(--cube-size);
-            perspective: 1000px;
-            margin: 0 auto;
-        }
-
+        /* Cube */
         .cube {
             width: 100%;
             height: 100%;
             position: relative;
             transform-style: preserve-3d;
-            animation: rotateCube 18s infinite linear;
+            cursor: grab;
             will-change: transform;
         }
 
-        .cube:hover {
-            animation-play-state: paused;
-        }
-
+        /* Faces */
         .cube__face {
             position: absolute;
             width: 100%;
@@ -175,17 +161,6 @@
 
         .cube__face--bottom {
             transform: rotateX(-90deg) translateZ(calc(var(--cube-size) / 2));
-        }
-
-        /* Animation */
-        @keyframes rotateCube {
-            0% {
-                transform: rotateX(-20deg) rotateY(0deg);
-            }
-
-            100% {
-                transform: rotateX(-20deg) rotateY(360deg);
-            }
         }
     </style>
 </head>
@@ -734,6 +709,67 @@
             el.classList.add('opacity-0', 'translate-y-10', 'transition-all', 'duration-700', 'ease-out');
             observer.observe(el);
         });
+
+        const cube = document.querySelector('.cube');
+
+        let isDragging = false;
+        let startX, startY;
+        let velocityX = 0;
+        let velocityY = 0;
+        let rotationX = -20;
+        let rotationY = 30;
+
+        cube.style.transform = `rotateX(${rotationX}deg) rotateY(${rotationY}deg)`;
+
+        // Pointer Events (Mouse + Touch unified)
+        cube.addEventListener('pointerdown', (e) => {
+            isDragging = true;
+            startX = e.clientX;
+            startY = e.clientY;
+            cube.style.cursor = "grabbing";
+        });
+
+        window.addEventListener('pointerup', () => {
+            isDragging = false;
+            cube.style.cursor = "grab";
+        });
+
+        window.addEventListener('pointermove', (e) => {
+            if (!isDragging) return;
+
+            const dx = e.clientX - startX;
+            const dy = e.clientY - startY;
+
+            velocityX = dy * 0.3;
+            velocityY = dx * 0.3;
+
+            rotationX -= velocityX;
+            rotationY += velocityY;
+
+            startX = e.clientX;
+            startY = e.clientY;
+        });
+
+        function animate() {
+            if (!isDragging) {
+                velocityX *= 0.95;
+                velocityY *= 0.95;
+
+                rotationX -= velocityX;
+                rotationY += velocityY;
+            }
+
+            cube.style.transform = `
+        rotateX(${rotationX}deg)
+        rotateY(${rotationY}deg)
+    `;
+
+            requestAnimationFrame(animate);
+        }
+
+        animate()
+
+
     </script>
 </body>
 
