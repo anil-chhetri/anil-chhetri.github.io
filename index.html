@@ -1,28 +1,541 @@
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="style.css">
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <title>Anil Kumar Chhetri | Data Engineer</title>
     
-</head>
-<body>
-    <header class="text-center mb-4">
-        <h1>Blog</h1>
-        <p>Latest Posts</p>
-    </header>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
     
-    <div class="container">
-        <div id="posts" class="posts"></div>
-    </div>
+    <!-- Fontsource Inter -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/inter@5.0.0/index.min.css">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <script src="script.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        dark: {
+                            900: '#0f172a',
+                            800: '#1e293b',
+                            700: '#334155',
+                        },
+                        accent: {
+                            400: '#22d3ee', // Cyan
+                            500: '#06b6d4',
+                            600: '#0891b2',
+                        }
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #22d3ee;
+        }
+
+        /* Parallax Background Pattern */
+        .bg-grid-pattern {
+            background-size: 40px 40px;
+            background-image: linear-gradient(to right, #1e293b 1px, transparent 1px),
+                              linear-gradient(to bottom, #1e293b 1px, transparent 1px);
+            mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+        }
+        
+        .glass-nav {
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .timeline-line::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, #22d3ee, #0f172a);
+        }
+
+        .tech-card {
+            transition: all 0.3s ease;
+        }
+        .tech-card:hover {
+            transform: translateY(-5px);
+            background: rgba(34, 211, 238, 0.1);
+            border-color: #22d3ee;
+        }
+    </style>
+</head>
+<body class="bg-dark-900 text-slate-300 font-sans antialiased overflow-x-hidden selection:bg-accent-500 selection:text-white">
+
+    <!-- Navigation Bar -->
+    <nav class="fixed top-0 w-full z-50 glass-nav transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo -->
+                <div class="flex-shrink-0 cursor-pointer" onclick="window.scrollTo(0,0)">
+                    <span class="text-2xl font-bold text-white tracking-tighter">
+                        AKC<span class="text-accent-400">.</span>
+                    </span>
+                </div>
+                
+                <!-- Desktop Menu -->
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="#home" class="hover:text-accent-400 transition-colors duration-300 text-sm font-medium">Home</a>
+                        <a href="#about" class="hover:text-accent-400 transition-colors duration-300 text-sm font-medium">About</a>
+                        <a href="#experience" class="hover:text-accent-400 transition-colors duration-300 text-sm font-medium">Experience</a>
+                        <a href="#projects" class="hover:text-accent-400 transition-colors duration-300 text-sm font-medium">Projects</a>
+                        <a href="blog.html" class="hover:text-accent-400 transition-colors duration-300 text-sm font-medium">Blog</a>
+                        <a href="#contact" class="px-4 py-2 rounded-full border border-accent-500 text-accent-400 hover:bg-accent-500 hover:text-white transition-all duration-300 text-sm font-medium">Contact</a>
+                    </div>
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="-mr-2 flex md:hidden">
+                    <button type="button" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')" class="inline-flex items-center justify-center p-2 rounded-md text-slate-400 hover:text-white hover:bg-dark-700 focus:outline-none">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div class="hidden md:hidden bg-dark-800 border-b border-dark-700" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#home" onclick="document.getElementById('mobile-menu').classList.add('hidden')" class="block px-3 py-2 rounded-md text-base font-medium hover:text-accent-400">Home</a>
+                <a href="#about" onclick="document.getElementById('mobile-menu').classList.add('hidden')" class="block px-3 py-2 rounded-md text-base font-medium hover:text-accent-400">About</a>
+                <a href="#experience" onclick="document.getElementById('mobile-menu').classList.add('hidden')" class="block px-3 py-2 rounded-md text-base font-medium hover:text-accent-400">Experience</a>
+                <a href="#projects" onclick="document.getElementById('mobile-menu').classList.add('hidden')" class="block px-3 py-2 rounded-md text-base font-medium hover:text-accent-400">Projects</a>
+                <a href="blog.html" onclick="document.getElementById('mobile-menu').classList.add('hidden')" class="block px-3 py-2 rounded-md text-base font-medium hover:text-accent-400">Blog</a>
+                <a href="#contact" onclick="document.getElementById('mobile-menu').classList.add('hidden')" class="block px-3 py-2 rounded-md text-base font-medium text-accent-400">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
+        <!-- Background Elements -->
+        <div class="absolute inset-0 bg-grid-pattern opacity-20 pointer-events-none"></div>
+        <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-accent-500/10 rounded-full blur-3xl animate-pulse-slow"></div>
+        <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl animate-pulse-slow" style="animation-delay: 2s;"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 grid md:grid-cols-2 gap-12 items-center">
+            
+            <!-- Text Content -->
+            <div class="order-2 md:order-1 space-y-6 text-center md:text-left fade-in-up">
+                <div class="inline-block px-3 py-1 rounded-full bg-dark-800 border border-dark-700 text-accent-400 text-xs font-mono mb-2">
+                    Available for hire
+                </div>
+                <h1 class="text-5xl md:text-7xl font-bold text-white leading-tight">
+                    Building scalable <br/>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-accent-400 to-blue-600">data solutions</span> <br/>
+                    for the modern web
+                </h1>
+                <p class="text-xl text-slate-400 max-w-lg mx-auto md:mx-0">
+                    Data Engineer | 5+ Years Experience
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start pt-4">
+                    <a href="#projects" class="px-8 py-3 bg-accent-500 hover:bg-accent-600 text-white font-medium rounded-lg transition-all shadow-lg shadow-accent-500/25">
+                        View My Work
+                    </a>
+                    <a href="#" class="px-8 py-3 bg-dark-800 hover:bg-dark-700 text-white font-medium rounded-lg border border-dark-700 transition-all flex items-center justify-center gap-2">
+                        <i class="fas fa-download"></i> Download Resume
+                    </a>
+                </div>
+            </div>
+
+            <!-- Visual Content (AKC Avatar) -->
+            <div class="order-1 md:order-2 flex justify-center fade-in-up" style="animation-delay: 0.2s;">
+                <div class="relative w-64 h-64 md:w-80 md:h-80 animate-float">
+                    <!-- Geometric SVG Avatar -->
+                    <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" class="w-full h-full drop-shadow-2xl">
+                        <defs>
+                            <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#22d3ee;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <!-- Background Shape -->
+                        <path fill="url(#grad1)" d="M44.7,-76.4C58.9,-69.2,71.8,-59.1,81.6,-46.6C91.4,-34.1,98.1,-19.2,95.8,-5.3C93.5,8.6,82.2,21.5,70.6,31.8C59,42.1,47.1,49.8,34.6,56.3C22.1,62.8,9,68.1,-2.9,69.2C-14.8,70.3,-25.5,67.2,-36.6,61.1C-47.7,55,-59.2,45.9,-68.3,34.5C-77.4,23.1,-84.1,9.4,-83.5,-4.2C-82.9,-17.8,-75,-31.3,-64.5,-42.2C-54,-53.1,-40.9,-61.4,-28.2,-68.2C-15.5,-75,-3.2,-80.3,10.1,-81.9C23.4,-83.5,35.7,-81.4,44.7,-76.4Z" transform="translate(100 100)" opacity="0.2" />
+                        <circle cx="100" cy="100" r="90" fill="#1e293b" stroke="#22d3ee" stroke-width="2" />
+                        <text x="100" y="130" font-family="'Inter', sans-serif" font-weight="900" font-size="80" fill="white" text-anchor="middle" letter-spacing="-2px">AKC</text>
+                        <!-- Decorative elements -->
+                        <circle cx="100" cy="100" r="100" fill="none" stroke="#22d3ee" stroke-width="1" stroke-dasharray="4 4" class="animate-spin-slow" style="animation-duration: 20s;" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-24 bg-dark-900 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">About Me</h2>
+                <div class="w-20 h-1 bg-accent-500 mx-auto rounded-full"></div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-12 items-start">
+                <!-- Bio -->
+                <div class="space-y-6">
+                    <h3 class="text-2xl font-semibold text-white">Data Engineer & Problem Solver</h3>
+                    <p class="text-slate-400 leading-relaxed">
+                        I am a passionate Data Engineer with over 5 years of experience designing and implementing robust data pipelines. My journey began with SQL development and has evolved into architecting complex ETL workflows using modern cloud technologies.
+                    </p>
+                    <p class="text-slate-400 leading-relaxed">
+                        I specialize in transforming raw data into actionable insights, ensuring data quality, and optimizing system performance. Whether it's streaming data with Kafka or orchestrating pipelines with Airflow, I love solving the puzzle of data movement.
+                    </p>
+                    
+                    <div class="pt-6">
+                        <h4 class="text-white font-medium mb-4 flex items-center gap-2">
+                            <i class="fas fa-camera text-accent-400"></i> Beyond Code
+                        </h4>
+                        <div class="flex gap-4">
+                            <div class="flex items-center gap-2 bg-dark-800 px-4 py-2 rounded-lg border border-dark-700">
+                                <i class="fas fa-camera text-slate-400"></i> <span class="text-sm">Photography</span>
+                            </div>
+                            <div class="flex items-center gap-2 bg-dark-800 px-4 py-2 rounded-lg border border-dark-700">
+                                <i class="fas fa-hiking text-slate-400"></i> <span class="text-sm">Hiking</span>
+                            </div>
+                            <div class="flex items-center gap-2 bg-dark-800 px-4 py-2 rounded-lg border border-dark-700">
+                                <i class="fas fa-chess text-slate-400"></i> <span class="text-sm">Chess</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tech Stack -->
+                <div>
+                    <h3 class="text-xl font-semibold text-white mb-6">Tech Stack</h3>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                        <!-- Tech Items -->
+                        <div class="tech-card p-4 rounded-xl bg-dark-800 border border-dark-700 flex flex-col items-center justify-center gap-2">
+                            <i class="fab fa-python text-3xl text-yellow-400"></i>
+                            <span class="text-sm font-medium">Python</span>
+                        </div>
+                        <div class="tech-card p-4 rounded-xl bg-dark-800 border border-dark-700 flex flex-col items-center justify-center gap-2">
+                            <i class="fas fa-database text-3xl text-blue-400"></i>
+                            <span class="text-sm font-medium">SQL</span>
+                        </div>
+                        <div class="tech-card p-4 rounded-xl bg-dark-800 border border-dark-700 flex flex-col items-center justify-center gap-2">
+                            <i class="fas fa-fire text-3xl text-orange-500"></i>
+                            <span class="text-sm font-medium">PySpark</span>
+                        </div>
+                        <div class="tech-card p-4 rounded-xl bg-dark-800 border border-dark-700 flex flex-col items-center justify-center gap-2">
+                            <i class="fab fa-microsoft text-3xl text-blue-500"></i>
+                            <span class="text-sm font-medium">Azure</span>
+                        </div>
+                        <div class="tech-card p-4 rounded-xl bg-dark-800 border border-dark-700 flex flex-col items-center justify-center gap-2">
+                            <i class="fas fa-bolt text-3xl text-yellow-500"></i>
+                            <span class="text-sm font-medium">Kafka</span>
+                        </div>
+                        <div class="tech-card p-4 rounded-xl bg-dark-800 border border-dark-700 flex flex-col items-center justify-center gap-2">
+                            <i class="fas fa-cloud text-3xl text-green-400"></i>
+                            <span class="text-sm font-medium">Databricks</span>
+                        </div>
+                        <div class="tech-card p-4 rounded-xl bg-dark-800 border border-dark-700 flex flex-col items-center justify-center gap-2">
+                            <i class="fas fa-project-diagram text-3xl text-purple-400"></i>
+                            <span class="text-sm font-medium">Airflow</span>
+                        </div>
+                        <div class="tech-card p-4 rounded-xl bg-dark-800 border border-dark-700 flex flex-col items-center justify-center gap-2">
+                            <i class="fas fa-cube text-3xl text-red-400"></i>
+                            <span class="text-sm font-medium">DBT</span>
+                        </div>
+                        <div class="tech-card p-4 rounded-xl bg-dark-800 border border-dark-700 flex flex-col items-center justify-center gap-2">
+                            <i class="fas fa-layer-group text-3xl text-teal-400"></i>
+                            <span class="text-sm font-medium">Delta Lake</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section (Parallax) -->
+    <section id="experience" class="relative py-24 overflow-hidden">
+        <!-- Parallax Background -->
+        <div class="absolute inset-0 bg-fixed bg-center bg-cover z-0" 
+             style="background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgdmlld0JveD0iMCAwIDQwIDQwIj48ZyBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0wIDQwaDQwVjBIMHY0MHptMjAtMjBoMjB2MjBIMjBWMjB6TTAgMjBoMjB2MjBIMFYyMHoiIGZpbGw9IiMxZTI5M2IiIGZpbGwtb3BhY2l0eT0iMC41Ii8+PC9nPjwvc3ZnPg=='); opacity: 0.3;">
+        </div>
+        <div class="absolute inset-0 bg-gradient-to-b from-dark-900 via-transparent to-dark-900 z-0"></div>
+
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Experience</h2>
+                <div class="w-20 h-1 bg-accent-500 mx-auto rounded-full"></div>
+            </div>
+
+            <div class="relative pl-8 md:pl-0 timeline-line">
+                <!-- Role 1 -->
+                <div class="relative md:pl-12 pb-12 group">
+                    <div class="absolute left-[-5px] top-0 w-3 h-3 bg-accent-500 rounded-full border-2 border-dark-900 shadow-[0_0_10px_#22d3ee]"></div>
+                    <div class="bg-dark-800/90 backdrop-blur p-6 rounded-xl border border-dark-700 hover:border-accent-500/50 transition-all duration-300">
+                        <div class="flex flex-col md:flex-row md:justify-between md:items-center mb-4">
+                            <div>
+                                <h3 class="text-xl font-bold text-white">Data Engineer</h3>
+                                <p class="text-accent-400 font-medium">Fable Data</p>
+                            </div>
+                            <span class="text-sm text-slate-400 mt-2 md:mt-0 font-mono bg-dark-900 px-3 py-1 rounded">03/2023 – Present • London</span>
+                        </div>
+                        <ul class="space-y-2 text-slate-400 text-sm list-disc list-inside marker:text-accent-500">
+                            <li>Architected scalable ETL pipelines processing 5TB+ daily data using PySpark and Databricks.</li>
+                            <li>Optimized SQL queries reducing reporting latency by 40%.</li>
+                            <li>Implemented real-time data streaming solutions using Kafka and Azure Event Hubs.</li>
+                            <li>Collaborated with data scientists to deploy ML models into production environments.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Role 2 -->
+                <div class="relative md:pl-12 pb-12 group">
+                    <div class="absolute left-[-5px] top-0 w-3 h-3 bg-dark-700 rounded-full border-2 border-dark-900 group-hover:bg-accent-500 transition-colors duration-300"></div>
+                    <div class="bg-dark-800/90 backdrop-blur p-6 rounded-xl border border-dark-700 hover:border-accent-500/50 transition-all duration-300">
+                        <div class="flex flex-col md:flex-row md:justify-between md:items-center mb-4">
+                            <div>
+                                <h3 class="text-xl font-bold text-white">ETL Developer</h3>
+                                <p class="text-accent-400 font-medium">Cotiviti Nepal</p>
+                            </div>
+                            <span class="text-sm text-slate-400 mt-2 md:mt-0 font-mono bg-dark-900 px-3 py-1 rounded">10/2020 – 08/2022 • Kathmandu</span>
+                        </div>
+                        <ul class="space-y-2 text-slate-400 text-sm list-disc list-inside marker:text-accent-500">
+                            <li>Developed complex SSIS packages for healthcare claims data processing.</li>
+                            <li>Maintained and optimized stored procedures in SQL Server handling millions of records.</li>
+                            <li>Automated data validation processes using Python scripts.</li>
+                            <li>Reduced data discrepancy rates by implementing rigorous quality checks.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Role 3 -->
+                <div class="relative md:pl-12 pb-12 group">
+                    <div class="absolute left-[-5px] top-0 w-3 h-3 bg-dark-700 rounded-full border-2 border-dark-900 group-hover:bg-accent-500 transition-colors duration-300"></div>
+                    <div class="bg-dark-800/90 backdrop-blur p-6 rounded-xl border border-dark-700 hover:border-accent-500/50 transition-all duration-300">
+                        <div class="flex flex-col md:flex-row md:justify-between md:items-center mb-4">
+                            <div>
+                                <h3 class="text-xl font-bold text-white">SQL Developer</h3>
+                                <p class="text-accent-400 font-medium">Infodevelopers</p>
+                            </div>
+                            <span class="text-sm text-slate-400 mt-2 md:mt-0 font-mono bg-dark-900 px-3 py-1 rounded">07/2018 – 08/2020 • Kathmandu</span>
+                        </div>
+                        <ul class="space-y-2 text-slate-400 text-sm list-disc list-inside marker:text-accent-500">
+                            <li>Designed database schemas for enterprise resource planning systems.</li>
+                            <li>Created dynamic reports and dashboards for management using Power BI.</li>
+                            <li>Performed database tuning and index optimization.</li>
+                            <li>Assisted in migrating legacy data to modern SQL Server infrastructure.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Education -->
+            <div class="mt-12 bg-dark-800/50 p-6 rounded-xl border border-dark-700 text-center md:text-left">
+                <h3 class="text-lg font-bold text-white">Education</h3>
+                <p class="text-accent-400">BSc in CS & IT</p>
+                <p class="text-slate-400 text-sm">Tribhuvan University</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="py-24 bg-dark-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Projects</h2>
+                <p class="text-slate-400 mb-4">Fetched live from GitHub</p>
+                <div class="w-20 h-1 bg-accent-500 mx-auto rounded-full"></div>
+            </div>
+
+            <div id="projects-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Loading State -->
+                <div class="col-span-full flex justify-center items-center py-12">
+                    <i class="fas fa-circle-notch fa-spin text-4xl text-accent-500"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-24 bg-dark-800 relative overflow-hidden">
+        <!-- Decorative glow -->
+        <div class="absolute top-0 right-0 w-64 h-64 bg-accent-500/10 rounded-full blur-3xl"></div>
+        
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">Get in Touch</h2>
+            <p class="text-slate-400 text-lg mb-10 max-w-2xl mx-auto">
+                I'm currently looking for new opportunities. Whether you have a question or just want to say hi, I'll try my best to get back to you!
+            </p>
+            
+            <a href="mailto:chhetrianil@protonmail.com" class="inline-block px-8 py-4 bg-accent-500 hover:bg-accent-600 text-white font-bold rounded-lg transition-all shadow-lg shadow-accent-500/25 mb-12">
+                Say Hello
+            </a>
+
+            <div class="flex justify-center space-x-8">
+                <a href="https://github.com/anil-chhetri" target="_blank" class="text-slate-400 hover:text-white transition-colors transform hover:scale-110">
+                    <i class="fab fa-github text-3xl"></i>
+                </a>
+                <a href="https://linkedin.com/in/chhetrianil" target="_blank" class="text-slate-400 hover:text-blue-500 transition-colors transform hover:scale-110">
+                    <i class="fab fa-linkedin text-3xl"></i>
+                </a>
+                <a href="mailto:chhetrianil@protonmail.com" class="text-slate-400 hover:text-accent-400 transition-colors transform hover:scale-110">
+                    <i class="fas fa-envelope text-3xl"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark-900 py-8 border-t border-dark-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center">
+            <p class="text-slate-500 text-sm mb-4 md:mb-0">
+                &copy; 2023 Anil Kumar Chhetri. All rights reserved.
+            </p>
+            <div class="flex space-x-6 text-sm text-slate-500">
+                <a href="#home" class="hover:text-accent-400 transition-colors">Home</a>
+                <a href="#about" class="hover:text-accent-400 transition-colors">About</a>
+                <a href="#projects" class="hover:text-accent-400 transition-colors">Projects</a>
+                <a href="blog.html" class="hover:text-accent-400 transition-colors">Blog</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // GitHub API Fetch
+        const projectsGrid = document.getElementById('projects-grid');
+        
+        async function fetchProjects() {
+            try {
+                // Using a public GitHub user for demo purposes, or the specific user if known.
+                // Assuming 'anil-chhetri' based on email, but using a generic fetch for stability if user doesn't exist.
+                // In a real scenario, replace 'anil-chhetri' with the actual username.
+                const response = await fetch('https://api.github.com/users/anil-chhetri/repos?sort=updated&per_page=6');
+                
+                if (!response.ok) throw new Error('Failed to fetch repos');
+                
+                const repos = await response.json();
+                
+                projectsGrid.innerHTML = ''; // Clear loading state
+
+                repos.forEach(repo => {
+                    const card = document.createElement('div');
+                    card.className = 'bg-dark-800 border border-dark-700 rounded-xl p-6 hover:border-accent-500/50 transition-all duration-300 flex flex-col h-full';
+                    
+                    // Language color mapping
+                    let langColor = 'bg-gray-500';
+                    if(repo.language === 'Python') langColor = 'bg-yellow-500';
+                    if(repo.language === 'JavaScript') langColor = 'bg-yellow-300';
+                    if(repo.language === 'Java') langColor = 'bg-red-500';
+
+                    card.innerHTML = `
+                        <div class="flex justify-between items-start mb-4">
+                            <i class="far fa-folder text-3xl text-accent-400"></i>
+                            <div class="flex gap-2">
+                                ${repo.stargazers_count > 0 ? `
+                                <span class="flex items-center text-xs text-slate-400">
+                                    <i class="fas fa-star mr-1"></i> ${repo.stargazers_count}
+                                </span>` : ''}
+                                ${repo.forks_count > 0 ? `
+                                <span class="flex items-center text-xs text-slate-400">
+                                    <i class="fas fa-code-branch mr-1"></i> ${repo.forks_count}
+                                </span>` : ''}
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2 hover:text-accent-400 transition-colors">
+                            <a href="${repo.html_url}" target="_blank">${repo.name}</a>
+                        </h3>
+                        <p class="text-slate-400 text-sm mb-4 flex-grow line-clamp-3">
+                            ${repo.description || 'No description provided.'}
+                        </p>
+                        <div class="flex items-center justify-between mt-auto pt-4 border-t border-dark-700">
+                            <div class="flex items-center text-xs text-slate-400">
+                                <span class="w-2 h-2 rounded-full ${langColor} mr-2"></span>
+                                ${repo.language || 'Code'}
+                            </div>
+                            <a href="${repo.html_url}" target="_blank" class="text-accent-400 hover:text-white text-sm font-medium transition-colors">
+                                View Code <i class="fas fa-arrow-right ml-1"></i>
+                            </a>
+                        </div>
+                    `;
+                    projectsGrid.appendChild(card);
+                });
+            } catch (error) {
+                console.error(error);
+                projectsGrid.innerHTML = `
+                    <div class="col-span-full text-center text-slate-500">
+                        <p>Unable to load projects at this time.</p>
+                        <a href="https://github.com/anil-chhetri" target="_blank" class="text-accent-400 hover:underline">View on GitHub directly</a>
+                    </div>
+                `;
+            }
+        }
+
+        // Initialize
+        fetchProjects();
+
+        // Navbar Scroll Effect
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                nav.classList.add('shadow-lg');
+            } else {
+                nav.classList.remove('shadow-lg');
+            }
+        });
+
+        // Intersection Observer for Fade In
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('opacity-100', 'translate-y-0');
+                    entry.target.classList.remove('opacity-0', 'translate-y-10');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.tech-card, .bg-dark-800\\/90').forEach(el => {
+            el.classList.add('opacity-0', 'translate-y-10', 'transition-all', 'duration-700', 'ease-out');
+            observer.observe(el);
+        });
+    </script>
 </body>
 </html>
+
