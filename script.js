@@ -4,7 +4,7 @@ $(document).ready(function () {
     posts.push('https://raw.githubusercontent.com/anil-chhetri/Miscellaneous/main/SQL%20Server/ExecutionPlan.md')
     posts.push('https://raw.githubusercontent.com/anil-chhetri/Miscellaneous/main/Delta%20Lake/Read%20and%20write%20Batch%20files.md')
     posts.push('https://raw.githubusercontent.com/anil-chhetri/Miscellaneous/main/DataWarehouse/Dimension.md')
-    posts.push('https://raw.githubusercontent.com/anil-chhetri/Advanced-databricks-training/blob/main/introduction%20to%20streaming.md')
+    posts.push('https://raw.githubusercontent.com/anil-chhetri/Advanced-databricks-training/refs/heads/main/introduction%20to%20streaming.md')
 
 
     reversePosts = posts.reverse()
