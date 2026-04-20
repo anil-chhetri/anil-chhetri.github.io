@@ -11,7 +11,7 @@
         :root { --primary: #2563eb; --primary-dark: #1d4ed8; --secondary: #10b981; --danger: #ef4444; --warning: #f59e0b; --bg: #f8fafc; --card: #ffffff; --text: #1e293b; --text-light: #64748b; --border: #e2e8f0; }
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
         .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
-        header { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; padding: 30px 0; margin-bottom: 30px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+        header { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; padding: 30px 0; margin-bottom: 30px; }
         header h1 { font-size: 1.8rem; margin-bottom: 8px; }
         header p { opacity: 0.9; }
         .grid { display: grid; gap: 20px; margin-bottom: 24px; }
@@ -21,12 +21,11 @@
         .card h2::before { content: ''; width: 4px; height: 24px; background: var(--primary); border-radius: 2px; }
         .form-group { margin-bottom: 16px; }
         label { display: block; font-weight: 600; margin-bottom: 6px; font-size: 0.9rem; }
-        input, select, textarea { width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px; font-size: 1rem; font-family: inherit; transition: border 0.2s, box-shadow 0.2s; }
+        input, select, textarea { width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px; font-size: 1rem; font-family: inherit; }
         input:focus, select:focus, textarea:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235,0.1); }
         button { background: var(--primary); color: white; border: none; padding: 12px 24px; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
         button:hover { background: var(--primary-dark); transform: translateY(-1px); box-shadow: 0 4px 6px -1px rgba(37,99,235,0.3); }
         button.secondary { background: var(--secondary); } button.secondary:hover { background: #059669; }
-        button.danger { background: var(--danger); } button.danger:hover { background: #dc2626; }
         .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 16px; margin-bottom: 20px; }
         .stat-card { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; padding: 16px; border-radius: 10px; text-align: center; }
         .stat-card.warning { background: linear-gradient(135deg, var(--warning), #d97706); }
@@ -34,10 +33,10 @@
         .stat-value { font-size: 1.8rem; font-weight: 700; margin-bottom: 4px; }
         .stat-label { font-size: 0.8rem; opacity: 0.9; }
         .tabs { display: flex; gap: 8px; margin-bottom: 20px; border-bottom: 2px solid var(--border); flex-wrap: wrap; }
-        .tab { padding: 10px 16px; background: none; border: none; color: var(--text-light); font-weight: 600; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: all 0.2s; }
+        .tab { padding: 10px 16px; background: none; border: none; color: var(--text-light); font-weight: 600; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; }
         .tab.active { color: var(--primary); border-bottom-color: var(--primary); }
         .tab-content { display: none; } .tab-content.active { display: block; }
-        .alert { padding: 12px 16px; border-radius: 8px; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+        .alert { padding: 12px 16px; border-radius: 8px; margin-bottom: 16px; }
         .alert-success { background: #d1fae5; color: #065f46; border: 1px solid #a7f3d0; }
         .alert-warning { background: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
         .entry-list { max-height: 600px; overflow-y: auto; }
@@ -45,32 +44,24 @@
         .entry-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 10px; }
         .entry-date { font-weight: 700; color: var(--primary); }
         .entry-pain { background: var(--danger); color: white; padding: 4px 12px; border-radius: 20px; font-weight: 600; font-size: 0.85rem; }
-        .entry-pain.mild { background: var(--secondary); } .entry-pain.moderate { background: var(--warning); }
         .entry-details { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px; font-size: 0.85rem; color: var(--text-light); }
         .symptom-tag { display: inline-block; background: white; padding: 2px 8px; border-radius: 4px; margin-right: 6px; margin-bottom: 4px; border: 1px solid var(--border); font-size: 0.8rem; }
         .chart-container { position: relative; height: 280px; margin-top: 16px; }
         .empty-state { text-align: center; padding: 40px; color: var(--text-light); }
         .export-section { margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border); }
         .btn-group { display: flex; gap: 10px; flex-wrap: wrap; }
-        .upload-area { border: 2px dashed var(--border); border-radius: 12px; padding: 30px; text-align: center; background: var(--bg); cursor: pointer; transition: all 0.2s; margin-bottom: 16px; }
-        .upload-area:hover { border-color: var(--primary); background: #eff6ff; }
-        footer { text-align: center; padding: 30px; color: var(--text-light); font-size: 0.85rem; border-top: 1px solid var(--border); margin-top: 40px; }
+        footer { text-align: center; padding: 30px; color: var(--text-light); font-size: 0.85rem; margin-top: 40px; }
         
-        /* 3D Viewer Styles */
-        #anatomy-container { position: relative; width: 100%; height: 500px; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border-radius: 12px; overflow: hidden; margin-bottom: 16px; }
-        #anatomy-canvas { width: 100%; height: 100%; display: block; }
+        /* 3D Viewer */
+        #anatomy-container { position: relative; width: 100%; height: 450px; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border-radius: 12px; overflow: hidden; margin-bottom: 16px; }
+        #anatomy-canvas { width: 100%; height: 100%; }
         .viewer-controls { position: absolute; top: 10px; left: 10px; display: flex; gap: 8px; z-index: 10; }
-        .view-btn { padding: 8px 12px; background: rgba(255,255,255,0.9); border: 1px solid var(--border); border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.85rem; transition: all 0.2s; }
+        .view-btn { padding: 6px 12px; background: rgba(255,255,255,0.9); border: 1px solid var(--border); border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.8rem; }
         .view-btn:hover { background: white; }
-        .instruction-text { text-align: center; color: var(--text-light); font-size: 0.9rem; margin-bottom: 12px; }
+        .instruction-text { text-align: center; color: var(--text-light); font-size: 0.85rem; margin-bottom: 12px; }
         .selected-muscles-3d { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 12px; min-height: 32px; }
-        .muscle-tag-3d { padding: 6px 12px; border-radius: 16px; font-size: 0.85rem; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 6px; color: white; font-weight: 600; }
+        .muscle-tag-3d { padding: 6px 12px; border-radius: 16px; font-size: 0.85rem; cursor: pointer; transition: all 0.2s; color: white; font-weight: 600; }
         .muscle-tag-3d:hover { transform: scale(1.05); opacity: 0.9; }
-        .loading-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(26,26,46,0.95); display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 16px; z-index: 20; color: white; }
-        .spinner { width: 50px; height: 50px; border: 4px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 1s linear infinite; }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        
-        /* Muscle Group Colors */
         .muscle-Quadriceps { background: #ff6b6b; }
         .muscle-Hamstrings { background: #4ecdc4; }
         .muscle-Calf { background: #45b7d1; }
@@ -79,14 +70,14 @@
         .muscle-Hip { background: #f6e58d; color: #333; }
         .muscle-Anterior { background: #5dade2; }
         
-        @media(max-width: 640px) { #anatomy-container { height: 350px; } }
+        @media(max-width: 640px) { #anatomy-container { height: 300px; } }
     </style>
 </head>
 <body>
     <header>
         <div class="container">
-            <h1>🦵 Exertional Leg Pain Tracker - 3D Anatomy</h1>
-            <p>Click on muscles in the 3D model to pinpoint pain locations</p>
+            <h1>🦵 Exertional Leg Pain Tracker</h1>
+            <p>Click on 3D muscles to pinpoint pain locations</p>
         </div>
     </header>
 
@@ -94,12 +85,12 @@
         <div id="alertContainer"></div>
 
         <div class="card">
-            <h2>Dashboard Overview</h2>
+            <h2>Dashboard</h2>
             <div class="stats-grid">
-                <div class="stat-card"><div class="stat-value" id="totalEntries">0</div><div class="stat-label">Total Episodes</div></div>
-                <div class="stat-card warning"><div class="stat-value" id="avgPainLevel">-</div><div class="stat-label">Avg Pain Level</div></div>
+                <div class="stat-card"><div class="stat-value" id="totalEntries">0</div><div class="stat-label">Episodes</div></div>
+                <div class="stat-card warning"><div class="stat-value" id="avgPainLevel">-</div><div class="stat-label">Avg Pain</div></div>
                 <div class="stat-card success"><div class="stat-value" id="avgOnsetTime">-</div><div class="stat-label">Avg Onset (min)</div></div>
-                <div class="stat-card"><div class="stat-value" id="avgRecoveryTime">-</div><div class="stat-label">Avg Recovery (min)</div></div>
+                <div class="stat-card"><div class="stat-value" id="avgRecoveryTime">-</div><div class="stat-label">Avg Recovery</div></div>
             </div>
         </div>
 
@@ -107,65 +98,54 @@
             <button class="tab active" data-tab="log">📝 Log Episode</button>
             <button class="tab" data-tab="history">📋 History</button>
             <button class="tab" data-tab="analytics">📊 Analytics</button>
-            <button class="tab" data-tab="export">📤 Export / Import</button>
+            <button class="tab" data-tab="export">📤 Export</button>
         </div>
 
-        <!-- LOG TAB -->
         <div id="logTab" class="tab-content active">
             <form id="painForm">
                 <div class="grid grid-2">
                     <div class="card">
                         <h2>Activity Details</h2>
                         <div class="form-group">
-                            <label for="date">Date & Time *</label>
+                            <label>Date & Time *</label>
                             <input type="datetime-local" id="date" required>
                         </div>
                         <div class="form-group">
-                            <label for="activityType">Activity Type *</label>
+                            <label>Activity Type *</label>
                             <select id="activityType" required>
-                                <option value="">Select activity...</option>
+                                <option value="">Select...</option>
                                 <option value="fast-walking">Fast Walking</option>
                                 <option value="running">Running</option>
                                 <option value="jogging">Jogging</option>
                                 <option value="sprinting">Sprinting</option>
                                 <option value="hiking">Hiking</option>
-                                <option value="other">Other</option>
                             </select>
                         </div>
                         <div class="grid grid-2">
                             <div class="form-group">
-                                <label for="pace">Pace/Intensity</label>
+                                <label>Pace</label>
                                 <select id="pace">
                                     <option value="moderate">Moderate</option>
                                     <option value="fast" selected>Fast</option>
                                     <option value="very-fast">Very Fast</option>
-                                    <option value="maximal">Maximal</option>
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="duration">Duration (min)</label>
-                                <input type="number" id="duration" min="1" placeholder="e.g., 30">
+                                <label>Duration (min)</label>
+                                <input type="number" id="duration" min="1" placeholder="30">
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="distance">Distance (km) - Optional</label>
-                            <input type="number" id="distance" min="0" step="0.1" placeholder="e.g., 5.0">
                         </div>
                     </div>
 
                     <div class="card">
                         <h2>Pain Location - 3D Anatomy</h2>
-                        <p class="instruction-text">Click on muscles to select painful areas • Drag to rotate • Scroll to zoom</p>
+                        <p class="instruction-text">Click muscles to select • Drag to rotate • Scroll to zoom</p>
                         
                         <div id="anatomy-container">
-                            <div class="loading-overlay" id="loadingOverlay">
-                                <div class="spinner"></div>
-                                <div>Loading 3D anatomy model...</div>
-                            </div>
                             <div id="anatomy-canvas"></div>
                             <div class="viewer-controls">
-                                <button type="button" class="view-btn" onclick="resetView()">Reset View</button>
-                                <button type="button" class="view-btn" onclick="toggleRotation()">Auto Rotate</button>
+                                <button type="button" class="view-btn" onclick="resetView()">Reset</button>
+                                <button type="button" class="view-btn" onclick="toggleRotation()">Rotate</button>
                             </div>
                         </div>
                         
@@ -173,123 +153,99 @@
                         <input type="hidden" id="selectedMuscles" name="locations">
                         
                         <div class="form-group" style="margin-top: 16px;">
-                            <label for="timeToPain">Time to Pain Onset (min) *</label>
-                            <input type="number" id="timeToPain" min="0" step="0.5" required placeholder="How long until pain started?">
+                            <label>Time to Pain Onset (min) *</label>
+                            <input type="number" id="timeToPain" min="0" step="0.5" required placeholder="How long?">
                         </div>
                         <div class="form-group">
-                            <label for="painLevel">Pain Level (0-10) *</label>
+                            <label>Pain Level (0-10) *</label>
                             <input type="range" id="painLevel" min="0" max="10" value="5" style="width: 100%; margin: 10px 0;">
                             <div style="display: flex; justify-content: space-between; font-weight: 600;">
                                 <span>0</span><span id="painValue">5</span><span>10</span>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="recoveryTime">Recovery Time (min) *</label>
-                            <input type="number" id="recoveryTime" min="0" step="1" required placeholder="How long until pain resolved?">
+                            <label>Recovery Time (min) *</label>
+                            <input type="number" id="recoveryTime" min="0" step="1" required placeholder="How long to recover?">
                         </div>
                         <div class="form-group">
-                            <label>Associated Symptoms</label>
+                            <label>Symptoms</label>
                             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                                <label class="checkbox-item"><input type="checkbox" id="sym-numbness" value="Numbness"><span>Numbness</span></label>
-                                <label class="checkbox-item"><input type="checkbox" id="sym-tingling" value="Tingling"><span>Tingling</span></label>
-                                <label class="checkbox-item"><input type="checkbox" id="sym-weakness" value="Weakness"><span>Weakness</span></label>
-                                <label class="checkbox-item"><input type="checkbox" id="sym-tightness" value="Tightness"><span>Tightness</span></label>
-                                <label class="checkbox-item"><input type="checkbox" id="sym-cramping" value="Cramping"><span>Cramping</span></label>
-                                <label class="checkbox-item"><input type="checkbox" id="sym-burning" value="Burning"><span>Burning</span></label>
+                                <label><input type="checkbox" value="Numbness"> Numbness</label>
+                                <label><input type="checkbox" value="Tingling"> Tingling</label>
+                                <label><input type="checkbox" value="Weakness"> Weakness</label>
+                                <label><input type="checkbox" value="Tightness"> Tightness</label>
+                                <label><input type="checkbox" value="Cramping"> Cramping</label>
+                                <label><input type="checkbox" value="Burning"> Burning</label>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="notes">Additional Notes</label>
-                            <textarea id="notes" rows="3" placeholder="Surface type, footwear, weather, etc."></textarea>
+                            <label>Notes</label>
+                            <textarea id="notes" rows="2" placeholder="Additional details..."></textarea>
                         </div>
-                        <button type="submit" style="width: 100%; margin-top: 10px;">💾 Save Episode</button>
+                        <button type="submit" style="width: 100%;">💾 Save Episode</button>
                     </div>
                 </div>
             </form>
         </div>
 
-        <!-- HISTORY TAB -->
         <div id="historyTab" class="tab-content">
             <div class="card">
-                <h2>Episode History</h2>
+                <h2>History</h2>
                 <div id="entryList" class="entry-list"></div>
             </div>
         </div>
 
-        <!-- ANALYTICS TAB -->
         <div id="analyticsTab" class="tab-content">
             <div class="grid grid-2">
-                <div class="card"><h2>Pain Level Trend</h2><div class="chart-container"><canvas id="painChart"></canvas></div></div>
-                <div class="card"><h2>Time to Pain Onset</h2><div class="chart-container"><canvas id="onsetChart"></canvas></div></div>
+                <div class="card"><h2>Pain Trend</h2><div class="chart-container"><canvas id="painChart"></canvas></div></div>
+                <div class="card"><h2>Onset Time</h2><div class="chart-container"><canvas id="onsetChart"></canvas></div></div>
             </div>
-            <div class="card"><h2>Recovery Time Trend</h2><div class="chart-container"><canvas id="recoveryChart"></canvas></div></div>
         </div>
 
-        <!-- EXPORT/IMPORT TAB -->
         <div id="exportTab" class="tab-content">
             <div class="card">
-                <h2>Export & Import Data</h2>
+                <h2>Export Data</h2>
                 <div class="export-section">
-                    <h3 style="margin-bottom: 12px;">Export Your Data</h3>
                     <div class="btn-group">
-                        <button onclick="exportToCSV()" class="secondary">📊 CSV (Excel)</button>
-                        <button onclick="exportToJSON()">📄 JSON Backup</button>
-                        <button onclick="exportToPDF()" class="secondary">📋 PDF Report</button>
+                        <button onclick="exportToCSV()" class="secondary">📊 CSV</button>
+                        <button onclick="exportToJSON()">📄 JSON</button>
                     </div>
-                </div>
-                <div class="export-section">
-                    <h3 style="margin-bottom: 12px;">Import JSON Backup</h3>
-                    <div class="upload-area" onclick="document.getElementById('importFile').click()">
-                        <div style="font-size: 2rem; margin-bottom: 8px;">📥</div>
-                        <div style="font-weight: 600; margin-bottom: 4px;">Click to upload or drag & drop</div>
-                        <div style="font-size: 0.85rem; color: var(--text-light);">Supports .json exports from this app</div>
-                    </div>
-                    <input type="file" id="importFile" accept=".json" style="display: none;" onchange="handleImport(event)">
-                    <div class="alert alert-warning">⚠️ Import merges new entries with existing data. Duplicate entries (by ID) are automatically skipped.</div>
-                </div>
-                <div class="export-section">
-                    <h3 style="margin-bottom: 12px;">Data Management</h3>
-                    <button onclick="clearAllData()" class="danger">🗑️ Clear All Data</button>
                 </div>
             </div>
         </div>
     </div>
 
     <footer>
-        <p>Exertional Leg Pain Tracker | For use with healthcare providers</p>
-        <p style="margin-top: 8px; font-size: 0.75rem;">All data stored locally. Not a diagnostic tool. Consult a qualified physiotherapist.</p>
+        <p>Exertional Leg Pain Tracker | For healthcare use</p>
     </footer>
 
     <script>
         let painEntries = JSON.parse(localStorage.getItem('painEntries')) || [];
         let charts = {};
         let selectedMuscles = new Set();
-        
-        // Three.js variables
         let scene, camera, renderer, raycaster, mouse;
         let muscles = [];
         let autoRotate = false;
         let isDragging = false;
         let previousMousePosition = { x: 0, y: 0 };
 
-        // Muscle data
         const muscleData = {
-            'Rectus Femoris': { color: 0xff6b6b, group: 'Quadriceps', description: 'Front thigh muscle' },
-            'Vastus Lateralis': { color: 0xff8787, group: 'Quadriceps', description: 'Outer thigh muscle' },
-            'Vastus Medialis': { color: 0xffa5a5, group: 'Quadriceps', description: 'Inner front thigh' },
-            'Vastus Intermedius': { color: 0xffc3c3, group: 'Quadriceps', description: 'Deep quadriceps' },
-            'Biceps Femoris': { color: 0x4ecdc4, group: 'Hamstrings', description: 'Outer back thigh' },
-            'Semitendinosus': { color: 0x6ee7df, group: 'Hamstrings', description: 'Inner back thigh' },
-            'Semimembranosus': { color: 0x8ef4ed, group: 'Hamstrings', description: 'Deep hamstring' },
-            'Gastrocnemius': { color: 0x45b7d1, group: 'Calf', description: 'Main calf muscle' },
-            'Soleus': { color: 0x6dc9e3, group: 'Calf', description: 'Deep calf muscle' },
-            'Tibialis Anterior': { color: 0x5dade2, group: 'Anterior', description: 'Front shin muscle' },
-            'Gluteus Maximus': { color: 0xf9ca24, group: 'Gluteal', description: 'Buttock muscle' },
-            'Tensor Fasciae Latae': { color: 0xf6e58d, group: 'Hip', description: 'Lateral hip muscle' },
-            'Sartorius': { color: 0xffbe76, group: 'Anterior', description: 'Longest muscle' },
-            'Adductor Magnus': { color: 0xa29bfe, group: 'Adductors', description: 'Inner thigh' },
-            'Adductor Longus': { color: 0xb8b0fd, group: 'Adductors', description: 'Superficial adductor' },
-            'Gracilis': { color: 0xc9c3fc, group: 'Adductors', description: 'Thin inner thigh' }
+            'Rectus Femoris': { color: 0xff6b6b, group: 'Quadriceps' },
+            'Vastus Lateralis': { color: 0xff8787, group: 'Quadriceps' },
+            'Vastus Medialis': { color: 0xffa5a5, group: 'Quadriceps' },
+            'Vastus Intermedius': { color: 0xffc3c3, group: 'Quadriceps' },
+            'Biceps Femoris': { color: 0x4ecdc4, group: 'Hamstrings' },
+            'Semitendinosus': { color: 0x6ee7df, group: 'Hamstrings' },
+            'Semimembranosus': { color: 0x8ef4ed, group: 'Hamstrings' },
+            'Gastrocnemius': { color: 0x45b7d1, group: 'Calf' },
+            'Soleus': { color: 0x6dc9e3, group: 'Calf' },
+            'Tibialis Anterior': { color: 0x5dade2, group: 'Anterior' },
+            'Gluteus Maximus': { color: 0xf9ca24, group: 'Gluteal' },
+            'Tensor Fasciae Latae': { color: 0xf6e58d, group: 'Hip' },
+            'Sartorius': { color: 0xffbe76, group: 'Anterior' },
+            'Adductor Magnus': { color: 0xa29bfe, group: 'Adductors' },
+            'Adductor Longus': { color: 0xb8b0fd, group: 'Adductors' },
+            'Gracilis': { color: 0xc9c3fc, group: 'Adductors' }
         };
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -301,16 +257,14 @@
                 document.getElementById('painValue').textContent = this.value;
             });
 
-            const form = document.getElementById('painForm');
-            if (form) form.addEventListener('submit', handleSubmit);
+            document.getElementById('painForm').addEventListener('submit', handleSubmit);
 
             document.querySelectorAll('.tab').forEach(tab => {
                 tab.addEventListener('click', (e) => switchTab(e.target.dataset.tab));
             });
 
-            // Initialize 3D viewer
-            init3DViewer();
-
+            // Initialize 3D after a short delay to ensure DOM is ready
+            setTimeout(init3DViewer, 100);
             updateDashboard();
             renderEntries();
             initCharts();
@@ -324,99 +278,91 @@
             if (tabName === 'analytics') updateCharts();
         }
 
-        // 3D Viewer Functions
         function init3DViewer() {
-            const container = document.getElementById('anatomy-container');
-            const canvasContainer = document.getElementById('anatomy-canvas');
-            
-            scene = new THREE.Scene();
-            scene.background = new THREE.Color(0x1a1a2e);
+            try {
+                const container = document.getElementById('anatomy-container');
+                const canvasDiv = document.getElementById('anatomy-canvas');
+                
+                // Clear any existing canvas
+                canvasDiv.innerHTML = '';
+                
+                scene = new THREE.Scene();
+                scene.background = new THREE.Color(0x1a1a2e);
 
-            camera = new THREE.PerspectiveCamera(75, container.clientWidth / 500, 0.1, 1000);
-            camera.position.set(0, 5, 15);
+                camera = new THREE.PerspectiveCamera(75, container.clientWidth / 450, 0.1, 1000);
+                camera.position.set(0, 5, 15);
 
-            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-            renderer.setSize(container.clientWidth, 500);
-            renderer.shadowMap.enabled = true;
-            canvasContainer.appendChild(renderer.domElement);
+                renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+                renderer.setSize(container.clientWidth, 450);
+                renderer.shadowMap.enabled = true;
+                canvasDiv.appendChild(renderer.domElement);
 
-            const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
-            scene.add(ambientLight);
+                // Lights
+                scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+                const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
+                dirLight.position.set(10, 10, 5);
+                dirLight.castShadow = true;
+                scene.add(dirLight);
+                scene.add(new THREE.DirectionalLight(0xffffff, 0.4));
 
-            const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
-            directionalLight.position.set(10, 10, 5);
-            directionalLight.castShadow = true;
-            scene.add(directionalLight);
+                raycaster = new THREE.Raycaster();
+                mouse = new THREE.Vector2();
 
-            const backLight = new THREE.DirectionalLight(0xffffff, 0.4);
-            backLight.position.set(-10, 10, -5);
-            scene.add(backLight);
+                createLegModel();
 
-            raycaster = new THREE.Raycaster();
-            mouse = new THREE.Vector2();
+                // Events
+                renderer.domElement.addEventListener('click', onMouseClick);
+                renderer.domElement.addEventListener('mousemove', onMouseMove);
+                renderer.domElement.addEventListener('mousedown', () => isDragging = true);
+                renderer.domElement.addEventListener('mouseup', () => isDragging = false);
+                renderer.domElement.addEventListener('wheel', (e) => {
+                    e.preventDefault();
+                    camera.position.z += e.deltaY * 0.01;
+                    camera.position.z = Math.max(8, Math.min(25, camera.position.z));
+                });
 
-            createLegModel();
-
-            renderer.domElement.addEventListener('click', onMouseClick, false);
-            renderer.domElement.addEventListener('mousemove', onMouseMove, false);
-            
-            renderer.domElement.addEventListener('mousedown', (e) => {
-                isDragging = true;
-            });
-
-            renderer.domElement.addEventListener('mousemove', (e) => {
-                if (isDragging) {
-                    const deltaMove = {
-                        x: e.offsetX - previousMousePosition.x,
-                        y: e.offsetY - previousMousePosition.y
-                    };
-
-                    muscles.forEach(muscle => {
-                        muscle.rotation.y += deltaMove.x * 0.01;
-                        muscle.rotation.x += deltaMove.y * 0.01;
-                    });
-                }
-                previousMousePosition = { x: e.offsetX, y: e.offsetY };
-            });
-
-            renderer.domElement.addEventListener('mouseup', () => {
-                isDragging = false;
-            });
-
-            renderer.domElement.addEventListener('wheel', (e) => {
-                e.preventDefault();
-                camera.position.z += e.deltaY * 0.01;
-                camera.position.z = Math.max(8, Math.min(25, camera.position.z));
-            });
-
-            document.getElementById('loadingOverlay').style.display = 'none';
-            animate();
+                animate();
+                console.log('3D Viewer initialized successfully');
+            } catch (error) {
+                console.error('Error initializing 3D viewer:', error);
+                document.getElementById('anatomy-container').innerHTML = 
+                    '<div style="color: white; padding: 20px; text-align: center;">' +
+                    '<h3>3D Viewer Not Available</h3>' +
+                    '<p>Please select muscles from the tags below or try refreshing the page.</p>' +
+                    '</div>';
+            }
         }
 
         function createLegModel() {
-            createMuscle('Rectus Femoris', new THREE.BoxGeometry(1.2, 4, 1), { x: 0, y: 3, z: 0.3 });
-            createMuscle('Vastus Lateralis', new THREE.BoxGeometry(1.5, 4, 1.2), { x: -1.2, y: 3, z: 0 });
-            createMuscle('Vastus Medialis', new THREE.BoxGeometry(1.5, 4, 1.2), { x: 1.2, y: 3, z: 0 });
-            createMuscle('Vastus Intermedius', new THREE.BoxGeometry(1, 3.5, 0.8), { x: 0, y: 3, z: -0.2 });
-            createMuscle('Biceps Femoris', new THREE.BoxGeometry(1.2, 4.5, 1), { x: -1, y: 3, z: -1.5 });
-            createMuscle('Semitendinosus', new THREE.BoxGeometry(1, 4.5, 1), { x: 0.5, y: 3, z: -1.5 });
-            createMuscle('Semimembranosus', new THREE.BoxGeometry(1.2, 4, 1), { x: 0.8, y: 3.2, z: -1.8 });
-            createMuscle('Gastrocnemius', new THREE.CylinderGeometry(0.8, 0.6, 3, 16), { x: 0, y: -0.5, z: -0.5 });
-            createMuscle('Soleus', new THREE.CylinderGeometry(0.9, 0.7, 2.5, 16), { x: 0, y: -0.8, z: -0.8 });
-            createMuscle('Tibialis Anterior', new THREE.CylinderGeometry(0.5, 0.4, 3, 12), { x: 0.7, y: -0.5, z: 0.5 });
-            createMuscle('Gluteus Maximus', new THREE.BoxGeometry(2.5, 2, 2), { x: 0, y: 5.5, z: -1 });
-            createMuscle('Tensor Fasciae Latae', new THREE.BoxGeometry(0.8, 2, 0.8), { x: -1.5, y: 5, z: 0.5 });
-            createMuscle('Sartorius', new THREE.BoxGeometry(0.6, 5, 0.6), { x: 1, y: 2.5, z: 0.2 });
-            createMuscle('Adductor Magnus', new THREE.BoxGeometry(1.3, 4, 1.2), { x: 1.3, y: 3, z: -0.8 });
-            createMuscle('Adductor Longus', new THREE.BoxGeometry(1, 3.5, 0.9), { x: 1.5, y: 3.5, z: -0.3 });
-            createMuscle('Gracilis', new THREE.BoxGeometry(0.5, 4.5, 0.5), { x: 1.8, y: 2.5, z: -0.5 });
+            const muscleConfigs = [
+                ['Rectus Femoris', new THREE.BoxGeometry(1.2, 4, 1), { x: 0, y: 3, z: 0.3 }],
+                ['Vastus Lateralis', new THREE.BoxGeometry(1.5, 4, 1.2), { x: -1.2, y: 3, z: 0 }],
+                ['Vastus Medialis', new THREE.BoxGeometry(1.5, 4, 1.2), { x: 1.2, y: 3, z: 0 }],
+                ['Vastus Intermedius', new THREE.BoxGeometry(1, 3.5, 0.8), { x: 0, y: 3, z: -0.2 }],
+                ['Biceps Femoris', new THREE.BoxGeometry(1.2, 4.5, 1), { x: -1, y: 3, z: -1.5 }],
+                ['Semitendinosus', new THREE.BoxGeometry(1, 4.5, 1), { x: 0.5, y: 3, z: -1.5 }],
+                ['Semimembranosus', new THREE.BoxGeometry(1.2, 4, 1), { x: 0.8, y: 3.2, z: -1.8 }],
+                ['Gastrocnemius', new THREE.CylinderGeometry(0.8, 0.6, 3, 16), { x: 0, y: -0.5, z: -0.5 }],
+                ['Soleus', new THREE.CylinderGeometry(0.9, 0.7, 2.5, 16), { x: 0, y: -0.8, z: -0.8 }],
+                ['Tibialis Anterior', new THREE.CylinderGeometry(0.5, 0.4, 3, 12), { x: 0.7, y: -0.5, z: 0.5 }],
+                ['Gluteus Maximus', new THREE.BoxGeometry(2.5, 2, 2), { x: 0, y: 5.5, z: -1 }],
+                ['Tensor Fasciae Latae', new THREE.BoxGeometry(0.8, 2, 0.8), { x: -1.5, y: 5, z: 0.5 }],
+                ['Sartorius', new THREE.BoxGeometry(0.6, 5, 0.6), { x: 1, y: 2.5, z: 0.2 }],
+                ['Adductor Magnus', new THREE.BoxGeometry(1.3, 4, 1.2), { x: 1.3, y: 3, z: -0.8 }],
+                ['Adductor Longus', new THREE.BoxGeometry(1, 3.5, 0.9), { x: 1.5, y: 3.5, z: -0.3 }],
+                ['Gracilis', new THREE.BoxGeometry(0.5, 4.5, 0.5), { x: 1.8, y: 2.5, z: -0.5 }]
+            ];
 
-            const boneMaterial = new THREE.MeshPhongMaterial({ color: 0xf5f5dc, transparent: true, opacity: 0.3 });
-            const femur = new THREE.Mesh(new THREE.CylinderGeometry(0.4, 0.4, 5, 16), boneMaterial);
+            muscleConfigs.forEach(([name, geometry, position]) => {
+                createMuscle(name, geometry, position);
+            });
+
+            // Add bones
+            const boneMat = new THREE.MeshPhongMaterial({ color: 0xf5f5dc, transparent: true, opacity: 0.3 });
+            const femur = new THREE.Mesh(new THREE.CylinderGeometry(0.4, 0.4, 5, 16), boneMat);
             femur.position.set(0, 3, -0.5);
             scene.add(femur);
-
-            const tibia = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.3, 4, 16), boneMaterial);
+            const tibia = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.3, 4, 16), boneMat);
             tibia.position.set(0, -0.5, 0);
             scene.add(tibia);
         }
@@ -435,13 +381,12 @@
             mesh.name = name;
             mesh.userData = data;
             mesh.castShadow = true;
-            mesh.receiveShadow = true;
-
             scene.add(mesh);
             muscles.push(mesh);
         }
 
         function onMouseMove(event) {
+            if (!renderer) return;
             const rect = renderer.domElement.getBoundingClientRect();
             mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
             mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
@@ -456,9 +401,9 @@
             });
 
             if (intersects.length > 0) {
-                const hoveredMuscle = intersects[0].object;
-                if (!selectedMuscles.has(hoveredMuscle.name)) {
-                    hoveredMuscle.material.opacity = 1;
+                const hovered = intersects[0].object;
+                if (!selectedMuscles.has(hovered.name)) {
+                    hovered.material.opacity = 1;
                 }
                 renderer.domElement.style.cursor = 'pointer';
             } else {
@@ -467,7 +412,7 @@
         }
 
         function onMouseClick(event) {
-            if (isDragging) return;
+            if (isDragging || !renderer) return;
             
             const rect = renderer.domElement.getBoundingClientRect();
             mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
@@ -477,19 +422,18 @@
             const intersects = raycaster.intersectObjects(muscles);
 
             if (intersects.length > 0) {
-                const clickedMuscle = intersects[0].object;
-                const muscleName = clickedMuscle.name;
+                const clicked = intersects[0].object;
+                const name = clicked.name;
 
-                if (selectedMuscles.has(muscleName)) {
-                    selectedMuscles.delete(muscleName);
-                    clickedMuscle.material.opacity = 0.85;
-                    clickedMuscle.material.emissive.setHex(0x000000);
+                if (selectedMuscles.has(name)) {
+                    selectedMuscles.delete(name);
+                    clicked.material.opacity = 0.85;
+                    clicked.material.emissive.setHex(0x000000);
                 } else {
-                    selectedMuscles.add(muscleName);
-                    clickedMuscle.material.opacity = 1;
-                    clickedMuscle.material.emissive.setHex(0x444444);
+                    selectedMuscles.add(name);
+                    clicked.material.opacity = 1;
+                    clicked.material.emissive.setHex(0x444444);
                 }
-                
                 updateSelectedTags3D();
             }
         }
@@ -498,84 +442,85 @@
             const container = document.getElementById('selectedMuscles3d');
             container.innerHTML = Array.from(selectedMuscles).map(m => {
                 const data = muscleData[m];
-                const groupClass = `muscle-${data.group}`;
-                return `<span class="muscle-tag-3d ${groupClass}" onclick="deselectMuscle3D('${m}')">${m} ✕</span>`;
+                return `<span class="muscle-tag-3d muscle-${data.group}" onclick="deselectMuscle3D('${m}')">${m} ✕</span>`;
             }).join('');
             document.getElementById('selectedMuscles').value = Array.from(selectedMuscles).join(',');
         }
 
-        window.deselectMuscle3D = function(muscleName) {
-            const muscle = muscles.find(m => m.name === muscleName);
+        window.deselectMuscle3D = function(name) {
+            const muscle = muscles.find(m => m.name === name);
             if (muscle) {
-                selectedMuscles.delete(muscleName);
+                selectedMuscles.delete(name);
                 muscle.material.opacity = 0.85;
                 muscle.material.emissive.setHex(0x000000);
                 updateSelectedTags3D();
             }
         };
 
-        function resetView() {
-            camera.position.set(0, 5, 15);
-            muscles.forEach(muscle => {
-                muscle.rotation.set(0, 0, 0);
-            });
-        }
+        window.resetView = function() {
+            if (camera) {
+                camera.position.set(0, 5, 15);
+                muscles.forEach(m => m.rotation.set(0, 0, 0));
+            }
+        };
 
-        function toggleRotation() {
+        window.toggleRotation = function() {
             autoRotate = !autoRotate;
-        }
+        };
 
         function animate() {
             requestAnimationFrame(animate);
-            
-            if (autoRotate && !isDragging) {
-                muscles.forEach(muscle => {
-                    muscle.rotation.y += 0.005;
-                });
+            if (autoRotate && !isDragging && muscles.length > 0) {
+                muscles.forEach(m => m.rotation.y += 0.005);
             }
-            
-            renderer.render(scene, camera);
+            if (renderer) renderer.render(scene, camera);
         }
 
         function handleSubmit(e) {
             e.preventDefault();
+            const symptoms = Array.from(document.querySelectorAll('#painForm input[type="checkbox"]:checked')).map(cb => cb.value);
+            
             const entry = {
                 id: Date.now(),
                 date: document.getElementById('date').value,
                 activityType: document.getElementById('activityType').value,
                 pace: document.getElementById('pace').value,
                 duration: parseFloat(document.getElementById('duration').value) || null,
-                distance: parseFloat(document.getElementById('distance').value) || null,
                 timeToPain: parseFloat(document.getElementById('timeToPain').value),
                 painLevel: parseInt(document.getElementById('painLevel').value),
                 recoveryTime: parseFloat(document.getElementById('recoveryTime').value),
                 locations: Array.from(selectedMuscles),
-                symptoms: Array.from(document.querySelectorAll('#painForm input[type="checkbox"]:checked')).map(cb => cb.value),
-                notes: document.getElementById('notes').value,
-                createdAt: new Date().toISOString()
+                symptoms: symptoms,
+                notes: document.getElementById('notes').value
             };
 
             painEntries.unshift(entry);
             localStorage.setItem('painEntries', JSON.stringify(painEntries));
-            showAlert('Episode logged successfully!', 'success');
             
+            // Reset form
             document.getElementById('painForm').reset();
             document.getElementById('painValue').textContent = '5';
             const now = new Date();
             now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
             document.getElementById('date').value = now.toISOString().slice(0, 16);
             
-            muscles.forEach(muscle => {
-                muscle.material.opacity = 0.85;
-                muscle.material.emissive.setHex(0x000000);
+            // Reset muscles
+            muscles.forEach(m => {
+                m.material.opacity = 0.85;
+                m.material.emissive.setHex(0x000000);
             });
             selectedMuscles.clear();
             updateSelectedTags3D();
 
             updateDashboard();
             renderEntries();
-            updateCharts();
             switchTab('history');
+            
+            const alert = document.createElement('div');
+            alert.className = 'alert alert-success';
+            alert.textContent = 'Episode saved!';
+            document.getElementById('alertContainer').appendChild(alert);
+            setTimeout(() => alert.remove(), 3000);
         }
 
         function updateDashboard() {
@@ -593,135 +538,62 @@
         function renderEntries() {
             const container = document.getElementById('entryList');
             if (painEntries.length === 0) {
-                container.innerHTML = '<div class="empty-state"><h3>No episodes logged yet</h3><p>Start tracking your pain episodes to see them here.</p></div>';
+                container.innerHTML = '<div class="empty-state"><h3>No episodes yet</h3></div>';
                 return;
             }
-            const actLabels = {'fast-walking':'Fast Walking','running':'Running','jogging':'Jogging','sprinting':'Sprinting','hiking':'Hiking','other':'Other'};
             container.innerHTML = painEntries.map(entry => {
-                const date = new Date(entry.date);
-                const dateStr = date.toLocaleDateString('en-US', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
-                const painClass = entry.painLevel <= 3 ? 'mild' : entry.painLevel <= 6 ? 'moderate' : '';
-                let html = `<div class="entry-item">
+                const date = new Date(entry.date).toLocaleString();
+                return `<div class="entry-item">
                     <div class="entry-header">
-                        <span class="entry-date">${dateStr}</span>
-                        <span class="entry-pain ${painClass}">Pain: ${entry.painLevel}/10</span>
+                        <span class="entry-date">${date}</span>
+                        <span class="entry-pain">Pain: ${entry.painLevel}/10</span>
                     </div>
                     <div class="entry-details">
-                        <span>🏃 ${actLabels[entry.activityType]||entry.activityType}</span>
-                        <span>⏱️ Onset: ${entry.timeToPain} min</span>
-                        <span>🔄 Recovery: ${entry.recoveryTime} min</span>
-                    </div>`;
-                if(entry.locations.length) html += `<div style="margin-top:8px"><strong>Location:</strong> ${entry.locations.map(l=>`<span class="symptom-tag">${l}</span>`).join('')}</div>`;
-                if(entry.symptoms.length) html += `<div style="margin-top:4px"><strong>Symptoms:</strong> ${entry.symptoms.map(s=>`<span class="symptom-tag">${s}</span>`).join('')}</div>`;
-                if(entry.notes) html += `<div style="margin-top:4px"><strong>Notes:</strong> ${entry.notes}</div>`;
-                html += `<button style="background:none;border:none;color:var(--danger);cursor:pointer;padding:8px 0;margin-top:8px;font-size:0.85rem" onclick="deleteEntry(${entry.id})">🗑️ Delete Entry</button></div>`;
-                return html;
+                        <span>🏃 ${entry.activityType}</span>
+                        <span>⏱️ Onset: ${entry.timeToPain}min</span>
+                        <span>🔄 Recovery: ${entry.recoveryTime}min</span>
+                    </div>
+                    ${entry.locations.length ? `<div style="margin-top:8px"><strong>Location:</strong> ${entry.locations.map(l=>`<span class="symptom-tag">${l}</span>`).join('')}</div>` : ''}
+                </div>`;
             }).join('');
         }
 
-        function deleteEntry(id) {
-            if(confirm('Delete this entry?')) {
-                painEntries = painEntries.filter(e => e.id !== id);
-                localStorage.setItem('painEntries', JSON.stringify(painEntries));
-                updateDashboard(); renderEntries(); updateCharts();
-                showAlert('Entry deleted', 'success');
-            }
-        }
-
         function initCharts() {
-            const opts = (label) => ({ responsive: true, maintainAspectRatio: false, plugins: { legend: {display:false} }, scales: { y: { beginAtZero: true, title: {display:true, text:label} }, x: { title: {display:true, text:'Date'} } } });
-            charts.pain = new Chart(document.getElementById('painChart'), { type: 'line',  { labels: [], datasets: [] }, options: opts('Pain Level') });
-            charts.onset = new Chart(document.getElementById('onsetChart'), { type: 'line',  { labels: [], datasets: [] }, options: opts('Onset Time (min)') });
-            charts.recovery = new Chart(document.getElementById('recoveryChart'), { type: 'line',  { labels: [], datasets: [] }, options: opts('Recovery Time (min)') });
-            updateCharts();
+            const opts = (label) => ({ responsive: true, maintainAspectRatio: false, plugins: { legend: {display:false} }, scales: { y: { beginAtZero: true, title: {display:true, text:label} } } });
+            charts.pain = new Chart(document.getElementById('painChart'), { type: 'line',  { labels: [], datasets: [] }, options: opts('Pain') });
+            charts.onset = new Chart(document.getElementById('onsetChart'), { type: 'line',  { labels: [], datasets: [] }, options: opts('Onset Time') });
         }
 
         function updateCharts() {
             const sorted = [...painEntries].reverse();
             const labels = sorted.map(e => new Date(e.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }));
-            const update = (chart, dataArr, color) => {
+            
+            [charts.pain, charts.onset].forEach((chart, i) => {
+                const data = sorted.map(e => i === 0 ? e.painLevel : e.timeToPain);
+                const color = i === 0 ? '#ef4444' : '#f59e0b';
                 chart.data.labels = labels;
-                chart.data.datasets = [{ label: 'Value',  dataArr, borderColor: color, backgroundColor: color+'20', fill: true, tension: 0.4 }];
+                chart.data.datasets = [{ label: 'Value',  data, borderColor: color, backgroundColor: color+'20', fill: true, tension: 0.4 }];
                 chart.update();
-            };
-            if(painEntries.length === 0) {
-                Object.values(charts).forEach(c => { c.data.labels = ['No data']; c.data.datasets = [{  [0], borderColor: '#cbd5e1', tension: 0.4 }]; c.update(); });
-                return;
-            }
-            update(charts.pain, sorted.map(e=>e.painLevel), '#ef4444');
-            update(charts.onset, sorted.map(e=>e.timeToPain), '#f59e0b');
-            update(charts.recovery, sorted.map(e=>e.recoveryTime), '#10b981');
+            });
         }
 
         function exportToCSV() {
-            if(!painEntries.length) return showAlert('No data to export', 'warning');
-            const h = ['Date','Activity','Pace','Duration','Distance','TimeToPain','PainLevel','RecoveryTime','Locations','Symptoms','Notes'];
-            const r = painEntries.map(e => [new Date(e.date).toLocaleString(), e.activityType, e.pace, e.duration||'', e.distance||'', e.timeToPain, e.painLevel, e.recoveryTime, e.locations.join('; '), e.symptoms.join('; '), `"${e.notes.replace(/"/g,'""')}"`]);
-            download([h,...r].map(r=>r.join(',')).join('\n'), 'leg-pain-tracker.csv', 'text/csv');
-            showAlert('CSV exported!', 'success');
+            if(!painEntries.length) return alert('No data');
+            const h = ['Date','Activity','Pain','Onset','Recovery','Locations'];
+            const r = painEntries.map(e => [e.date, e.activityType, e.painLevel, e.timeToPain, e.recoveryTime, e.locations.join('; ')]);
+            download([h,...r].map(r=>r.join(',')).join('\n'), 'leg-pain.csv', 'text/csv');
         }
 
         function exportToJSON() {
-            if(!painEntries.length) return showAlert('No data to export', 'warning');
-            download(JSON.stringify({ exportedAt: new Date().toISOString(), entries: painEntries }, null, 2), 'leg-pain-backup.json', 'application/json');
-            showAlert('JSON exported!', 'success');
-        }
-
-        function exportToPDF() {
-            if(!painEntries.length) return showAlert('No data to export', 'warning');
-            let txt = `EXERTIONAL LEG PAIN TRACKER REPORT\nGenerated: ${new Date().toLocaleString()}\nTotal Episodes: ${painEntries.length}\n\nSUMMARY\nAvg Pain: ${(painEntries.reduce((s,e)=>s+e.painLevel,0)/painEntries.length).toFixed(1)}\nAvg Onset: ${(painEntries.reduce((s,e)=>s+e.timeToPain,0)/painEntries.length).toFixed(1)} min\nAvg Recovery: ${(painEntries.reduce((s,e)=>s+e.recoveryTime,0)/painEntries.length).toFixed(1)} min\n\nEPISODES\n`;
-            painEntries.forEach((e,i) => { txt += `\n#${i+1} | ${new Date(e.date).toLocaleString()}\nAct: ${e.activityType} (${e.pace}) | Pain: ${e.painLevel}/10 | Onset: ${e.timeToPain}min | Rec: ${e.recoveryTime}min\n`; if(e.notes) txt += `Notes: ${e.notes}\n`; });
-            download(txt, 'leg-pain-report.txt', 'text/plain');
-            showAlert('Report exported!', 'success');
-        }
-
-        function handleImport(event) {
-            const file = event.target.files[0];
-            if(!file) return;
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                try {
-                    const data = JSON.parse(e.target.result);
-                    if(!data.entries || !Array.isArray(data.entries)) throw new Error('Invalid format');
-                    const existing = new Set(painEntries.map(e => e.id));
-                    const newEntries = data.entries.filter(e => !existing.has(e.id));
-                    painEntries = [...painEntries, ...newEntries];
-                    painEntries.sort((a,b) => new Date(b.date) - new Date(a.date));
-                    localStorage.setItem('painEntries', JSON.stringify(painEntries));
-                    updateDashboard(); renderEntries(); updateCharts();
-                    showAlert(`Imported ${newEntries.length} new entries.`, 'success');
-                } catch(err) {
-                    showAlert('Invalid JSON file. Please export a valid backup first.', 'warning');
-                }
-            };
-            reader.readAsText(file);
-            event.target.value = '';
-        }
-
-        function clearAllData() {
-            if(painEntries.length === 0) return showAlert('No data to clear', 'warning');
-            if(confirm(`Delete ALL ${painEntries.length} entries? This cannot be undone.`) && confirm('Are you absolutely sure?')) {
-                painEntries = [];
-                localStorage.removeItem('painEntries');
-                updateDashboard(); renderEntries(); updateCharts();
-                showAlert('All data cleared.', 'success');
-            }
-        }
-
-        function showAlert(msg, type='success') {
-            const c = document.getElementById('alertContainer');
-            const a = document.createElement('div');
-            a.className = `alert alert-${type}`;
-            a.textContent = msg;
-            c.appendChild(a);
-            setTimeout(() => a.remove(), 3000);
+            if(!painEntries.length) return alert('No data');
+            download(JSON.stringify(painEntries, null, 2), 'leg-pain.json', 'application/json');
         }
 
         function download(content, filename, mime) {
             const blob = new Blob([content], {type: mime});
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a'); a.href = url; a.download = filename;
-            document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+            a.click(); URL.revokeObjectURL(url);
         }
     </script>
 </body>
