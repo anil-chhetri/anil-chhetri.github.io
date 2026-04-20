@@ -22,9 +22,6 @@
         label { display: block; font-weight: 600; margin-bottom: 6px; font-size: 0.9rem; }
         input, select, textarea { width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px; font-size: 1rem; font-family: inherit; transition: border 0.2s, box-shadow 0.2s; }
         input:focus, select:focus, textarea:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235,0.1); }
-        .checkbox-group { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .checkbox-item { display: flex; align-items: center; gap: 8px; padding: 8px; background: var(--bg); border-radius: 6px; cursor: pointer; }
-        .checkbox-item input { width: auto; margin: 0; }
         button { background: var(--primary); color: white; border: none; padding: 12px 24px; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
         button:hover { background: var(--primary-dark); transform: translateY(-1px); box-shadow: 0 4px 6px -1px rgba(37,99,235,0.3); }
         button.secondary { background: var(--secondary); } button.secondary:hover { background: #059669; }
@@ -57,7 +54,22 @@
         .upload-area { border: 2px dashed var(--border); border-radius: 12px; padding: 30px; text-align: center; background: var(--bg); cursor: pointer; transition: all 0.2s; margin-bottom: 16px; }
         .upload-area:hover { border-color: var(--primary); background: #eff6ff; }
         footer { text-align: center; padding: 30px; color: var(--text-light); font-size: 0.85rem; border-top: 1px solid var(--border); margin-top: 40px; }
-        @media(max-width: 640px) { .checkbox-group { grid-template-columns: 1fr; } .stats-grid { grid-template-columns: 1fr 1fr; } }
+        
+        /* 🦵 Muscle Picker Styles */
+        .muscle-picker-container { text-align: center; margin-bottom: 20px; }
+        .view-toggle { display: inline-flex; background: var(--bg); border-radius: 8px; padding: 4px; margin-bottom: 16px; border: 1px solid var(--border); }
+        .view-btn { padding: 6px 16px; border: none; background: transparent; border-radius: 6px; cursor: pointer; font-weight: 600; color: var(--text-light); transition: all 0.2s; }
+        .view-btn.active { background: white; color: var(--primary); box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .muscle-map { position: relative; width: 100%; max-width: 600px; margin: 0 auto; height: 400px; }
+        .muscle-svg { width: 100%; height: 100%; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.15)); }
+        .muscle-zone { fill: #e2e8f0; stroke: #cbd5e1; stroke-width: 1.5; cursor: pointer; transition: all 0.2s ease; transform-origin: center; }
+        .muscle-zone:hover { fill: #94a3b8; transform: scale(1.02); }
+        .muscle-zone.selected { fill: var(--danger); stroke: #b91c1c; filter: drop-shadow(0 0 6px rgba(239,68,68,0.4)); }
+        .muscle-tooltip { position: absolute; background: var(--text); color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; pointer-events: none; opacity: 0; transition: opacity 0.2s; white-space: nowrap; z-index: 10; }
+        .selected-muscles { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 12px; min-height: 32px; }
+        .selected-tag { background: var(--danger); color: white; padding: 4px 10px; border-radius: 12px; font-size: 0.8rem; cursor: pointer; transition: all 0.2s; }
+        .selected-tag:hover { background: #b91c1c; }
+        @media(max-width: 640px) { .muscle-map { height: 300px; } }
     </style>
 </head>
 <body>
@@ -133,6 +145,39 @@
 
                     <div class="card">
                         <h2>Pain & Symptoms</h2>
+                        <div class="muscle-picker-container">
+                            <h3 style="margin-bottom: 12px;">Tap painful regions</h3>
+                            <div class="view-toggle">
+                                <button type="button" class="view-btn active" data-view="front">Front View</button>
+                                <button type="button" class="view-btn" data-view="back">Back View</button>
+                            </div>
+                            <div class="muscle-map">
+                                <div id="tooltip" class="muscle-tooltip"></div>
+                                <svg class="muscle-svg" viewBox="0 0 600 400" id="muscleSvg">
+                                    <!-- Front View Zones -->
+                                    <g id="front-view">
+                                        <path class="muscle-zone" data-muscle="Right Quadriceps" d="M380,80 L420,80 L440,160 L370,160 Z" />
+                                        <path class="muscle-zone" data-muscle="Left Quadriceps" d="M220,80 L180,80 L160,160 L230,160 Z" />
+                                        <path class="muscle-zone" data-muscle="Right Tibialis Anterior" d="M390,170 L430,170 L420,260 L380,260 Z" />
+                                        <path class="muscle-zone" data-muscle="Left Tibialis Anterior" d="M210,170 L170,170 L180,260 L220,260 Z" />
+                                        <path class="muscle-zone" data-muscle="Right Peroneals" d="M440,170 L460,170 L450,250 L430,250 Z" />
+                                        <path class="muscle-zone" data-muscle="Left Peroneals" d="M160,170 L140,170 L150,250 L170,250 Z" />
+                                    </g>
+                                    <!-- Back View Zones -->
+                                    <g id="back-view" style="display: none;">
+                                        <path class="muscle-zone" data-muscle="Right Hamstrings" d="M370,80 L430,80 L440,150 L360,150 Z" />
+                                        <path class="muscle-zone" data-muscle="Left Hamstrings" d="M170,80 L230,80 L240,150 L160,150 Z" />
+                                        <path class="muscle-zone" data-muscle="Right Gastrocnemius" d="M360,160 L440,160 L430,240 L370,240 Z" />
+                                        <path class="muscle-zone" data-muscle="Left Gastrocnemius" d="M240,160 L160,160 L170,240 L230,240 Z" />
+                                        <path class="muscle-zone" data-muscle="Right Soleus" d="M375,245 L425,245 L415,320 L385,320 Z" />
+                                        <path class="muscle-zone" data-muscle="Left Soleus" d="M225,245 L175,245 L185,320 L215,320 Z" />
+                                    </g>
+                                </svg>
+                            </div>
+                            <div id="selectedTags" class="selected-muscles"></div>
+                            <input type="hidden" id="selectedMuscles" name="locations">
+                        </div>
+
                         <div class="form-group">
                             <label for="timeToPain">Time to Pain Onset (min) *</label>
                             <input type="number" id="timeToPain" min="0" step="0.5" required placeholder="How long until pain started?">
@@ -149,23 +194,14 @@
                             <input type="number" id="recoveryTime" min="0" step="1" required placeholder="How long until pain resolved?">
                         </div>
                         <div class="form-group">
-                            <label>Pain Location</label>
-                            <div class="checkbox-group">
-                                <div class="checkbox-item"><input type="checkbox" id="loc-anterior" value="Anterior Shin"><label for="loc-anterior">Anterior Shin</label></div>
-                                <div class="checkbox-item"><input type="checkbox" id="loc-medial" value="Medial Shin"><label for="loc-medial">Medial Shin</label></div>
-                                <div class="checkbox-item"><input type="checkbox" id="loc-posterior" value="Posterior Calf"><label for="loc-posterior">Posterior Calf</label></div>
-                                <div class="checkbox-item"><input type="checkbox" id="loc-lateral" value="Lateral Leg"><label for="loc-lateral">Lateral Leg</label></div>
-                            </div>
-                        </div>
-                        <div class="form-group">
                             <label>Associated Symptoms</label>
-                            <div class="checkbox-group">
-                                <div class="checkbox-item"><input type="checkbox" id="sym-numbness" value="Numbness"><label for="sym-numbness">Numbness</label></div>
-                                <div class="checkbox-item"><input type="checkbox" id="sym-tingling" value="Tingling"><label for="sym-tingling">Tingling</label></div>
-                                <div class="checkbox-item"><input type="checkbox" id="sym-weakness" value="Weakness"><label for="sym-weakness">Weakness</label></div>
-                                <div class="checkbox-item"><input type="checkbox" id="sym-tightness" value="Tightness"><label for="sym-tightness">Tightness</label></div>
-                                <div class="checkbox-item"><input type="checkbox" id="sym-cramping" value="Cramping"><label for="sym-cramping">Cramping</label></div>
-                                <div class="checkbox-item"><input type="checkbox" id="sym-burning" value="Burning"><label for="sym-burning">Burning</label></div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                                <label class="checkbox-item"><input type="checkbox" id="sym-numbness" value="Numbness"><span>Numbness</span></label>
+                                <label class="checkbox-item"><input type="checkbox" id="sym-tingling" value="Tingling"><span>Tingling</span></label>
+                                <label class="checkbox-item"><input type="checkbox" id="sym-weakness" value="Weakness"><span>Weakness</span></label>
+                                <label class="checkbox-item"><input type="checkbox" id="sym-tightness" value="Tightness"><span>Tightness</span></label>
+                                <label class="checkbox-item"><input type="checkbox" id="sym-cramping" value="Cramping"><span>Cramping</span></label>
+                                <label class="checkbox-item"><input type="checkbox" id="sym-burning" value="Burning"><span>Burning</span></label>
                             </div>
                         </div>
                         <div class="form-group">
@@ -233,6 +269,8 @@
     <script>
         let painEntries = JSON.parse(localStorage.getItem('painEntries')) || [];
         let charts = {};
+        let selectedMuscles = new Set();
+        let currentView = 'front';
 
         document.addEventListener('DOMContentLoaded', () => {
             const now = new Date();
@@ -243,14 +281,50 @@
                 document.getElementById('painValue').textContent = this.value;
             });
 
-            // ✅ FIXED: Explicitly attach submit listener
             const form = document.getElementById('painForm');
-            if (form) {
-                form.addEventListener('submit', handleSubmit);
-            }
+            if (form) form.addEventListener('submit', handleSubmit);
 
             document.querySelectorAll('.tab').forEach(tab => {
                 tab.addEventListener('click', (e) => switchTab(e.target.dataset.tab));
+            });
+
+            // Muscle picker logic
+            document.querySelectorAll('.view-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentView = btn.dataset.view;
+                    document.getElementById('front-view').style.display = currentView === 'front' ? 'block' : 'none';
+                    document.getElementById('back-view').style.display = currentView === 'back' ? 'block' : 'none';
+                });
+            });
+
+            const tooltip = document.getElementById('tooltip');
+            document.querySelectorAll('.muscle-zone').forEach(zone => {
+                zone.addEventListener('click', (e) => {
+                    const muscle = zone.dataset.muscle;
+                    if (selectedMuscles.has(muscle)) {
+                        selectedMuscles.delete(muscle);
+                        zone.classList.remove('selected');
+                    } else {
+                        selectedMuscles.add(muscle);
+                        zone.classList.add('selected');
+                    }
+                    updateSelectedTags();
+                });
+
+                zone.addEventListener('mouseenter', (e) => {
+                    tooltip.textContent = zone.dataset.muscle;
+                    tooltip.style.opacity = '1';
+                });
+                zone.addEventListener('mousemove', (e) => {
+                    const rect = document.querySelector('.muscle-map').getBoundingClientRect();
+                    tooltip.style.left = (e.clientX - rect.left + 10) + 'px';
+                    tooltip.style.top = (e.clientY - rect.top - 30) + 'px';
+                });
+                zone.addEventListener('mouseleave', () => {
+                    tooltip.style.opacity = '0';
+                });
             });
 
             updateDashboard();
@@ -266,10 +340,24 @@
             if (tabName === 'analytics') updateCharts();
         }
 
-        function handleSubmit(e) {
-            e.preventDefault(); // ✅ Stops page reload
-            console.log('Form submitted!'); // Debug confirmation
+        function updateSelectedTags() {
+            const container = document.getElementById('selectedTags');
+            container.innerHTML = Array.from(selectedMuscles).map(m => 
+                `<span class="selected-tag" onclick="toggleMuscle('${m}')">${m} ✕</span>`
+            ).join('');
+            document.getElementById('selectedMuscles').value = Array.from(selectedMuscles).join(',');
+        }
 
+        window.toggleMuscle = function(muscle) {
+            selectedMuscles.delete(muscle);
+            document.querySelectorAll('.muscle-zone').forEach(z => {
+                if (z.dataset.muscle === muscle) z.classList.remove('selected');
+            });
+            updateSelectedTags();
+        };
+
+        function handleSubmit(e) {
+            e.preventDefault();
             const entry = {
                 id: Date.now(),
                 date: document.getElementById('date').value,
@@ -280,8 +368,8 @@
                 timeToPain: parseFloat(document.getElementById('timeToPain').value),
                 painLevel: parseInt(document.getElementById('painLevel').value),
                 recoveryTime: parseFloat(document.getElementById('recoveryTime').value),
-                locations: Array.from(document.querySelectorAll('#painForm input[type="checkbox"][id^="loc-"]:checked')).map(cb => cb.value),
-                symptoms: Array.from(document.querySelectorAll('#painForm input[type="checkbox"][id^="sym-"]:checked')).map(cb => cb.value),
+                locations: Array.from(selectedMuscles),
+                symptoms: Array.from(document.querySelectorAll('#painForm input[type="checkbox"]:checked')).map(cb => cb.value),
                 notes: document.getElementById('notes').value,
                 createdAt: new Date().toISOString()
             };
@@ -295,6 +383,11 @@
             const now = new Date();
             now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
             document.getElementById('date').value = now.toISOString().slice(0, 16);
+            
+            // Reset muscle picker
+            selectedMuscles.clear();
+            document.querySelectorAll('.muscle-zone').forEach(z => z.classList.remove('selected'));
+            updateSelectedTags();
 
             updateDashboard();
             renderEntries();
@@ -334,8 +427,6 @@
                         <span>🏃 ${actLabels[entry.activityType]||entry.activityType}</span>
                         <span>⏱️ Onset: ${entry.timeToPain} min</span>
                         <span>🔄 Recovery: ${entry.recoveryTime} min</span>
-                        ${entry.duration?`<span>📏 ${entry.duration} min</span>`:''}
-                        ${entry.distance?`<span>📍 ${entry.distance} km</span>`:''}
                     </div>`;
                 if(entry.locations.length) html += `<div style="margin-top:8px"><strong>Location:</strong> ${entry.locations.map(l=>`<span class="symptom-tag">${l}</span>`).join('')}</div>`;
                 if(entry.symptoms.length) html += `<div style="margin-top:4px"><strong>Symptoms:</strong> ${entry.symptoms.map(s=>`<span class="symptom-tag">${s}</span>`).join('')}</div>`;
@@ -355,20 +446,10 @@
         }
 
         function initCharts() {
-            const opts = (label) => ({ 
-                responsive: true, 
-                maintainAspectRatio: false, 
-                plugins: { legend: {display:false} }, 
-                scales: { 
-                    y: { beginAtZero: true, title: {display:true, text:label} }, 
-                    x: { title: {display:true, text:'Date'} } 
-                } 
-            });
-            
-            // ✅ FIXED: Added missing `data:` key to prevent JS crash
-            charts.pain = new Chart(document.getElementById('painChart'), { type: 'line', data: { labels: [], datasets: [] }, options: opts('Pain Level') });
-            charts.onset = new Chart(document.getElementById('onsetChart'), { type: 'line', data: { labels: [], datasets: [] }, options: opts('Onset Time (min)') });
-            charts.recovery = new Chart(document.getElementById('recoveryChart'), { type: 'line', data: { labels: [], datasets: [] }, options: opts('Recovery Time (min)') });
+            const opts = (label) => ({ responsive: true, maintainAspectRatio: false, plugins: { legend: {display:false} }, scales: { y: { beginAtZero: true, title: {display:true, text:label} }, x: { title: {display:true, text:'Date'} } } });
+            charts.pain = new Chart(document.getElementById('painChart'), { type: 'line',  { labels: [], datasets: [] }, options: opts('Pain Level') });
+            charts.onset = new Chart(document.getElementById('onsetChart'), { type: 'line',  { labels: [], datasets: [] }, options: opts('Onset Time (min)') });
+            charts.recovery = new Chart(document.getElementById('recoveryChart'), { type: 'line',  { labels: [], datasets: [] }, options: opts('Recovery Time (min)') });
             updateCharts();
         }
 
@@ -377,16 +458,11 @@
             const labels = sorted.map(e => new Date(e.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }));
             const update = (chart, dataArr, color) => {
                 chart.data.labels = labels;
-                // ✅ FIXED: Added missing `data:` key
-                chart.data.datasets = [{ label: 'Value', data: dataArr, borderColor: color, backgroundColor: color+'20', fill: true, tension: 0.4 }];
+                chart.data.datasets = [{ label: 'Value',  dataArr, borderColor: color, backgroundColor: color+'20', fill: true, tension: 0.4 }];
                 chart.update();
             };
             if(painEntries.length === 0) {
-                Object.values(charts).forEach(c => { 
-                    c.data.labels = ['No data']; 
-                    c.data.datasets = [{ data: [0], borderColor: '#cbd5e1', tension: 0.4 }]; 
-                    c.update(); 
-                });
+                Object.values(charts).forEach(c => { c.data.labels = ['No data']; c.data.datasets = [{  [0], borderColor: '#cbd5e1', tension: 0.4 }]; c.update(); });
                 return;
             }
             update(charts.pain, sorted.map(e=>e.painLevel), '#ef4444');
