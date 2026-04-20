@@ -6,8 +6,6 @@
     <title>Exertional Leg Pain Tracker - 3D Anatomy</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         :root { --primary: #2563eb; --primary-dark: #1d4ed8; --secondary: #10b981; --danger: #ef4444; --warning: #f59e0b; --bg: #f8fafc; --card: #ffffff; --text: #1e293b; --text-light: #64748b; --border: #e2e8f0; }
@@ -58,21 +56,29 @@
         .upload-area:hover { border-color: var(--primary); background: #eff6ff; }
         footer { text-align: center; padding: 30px; color: var(--text-light); font-size: 0.85rem; border-top: 1px solid var(--border); margin-top: 40px; }
         
-        /* 🦵 3D Viewer Styles */
-        #anatomy-container { position: relative; width: 100%; height: 500px; background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); border-radius: 12px; overflow: hidden; margin-bottom: 16px; }
+        /* 3D Viewer Styles */
+        #anatomy-container { position: relative; width: 100%; height: 500px; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border-radius: 12px; overflow: hidden; margin-bottom: 16px; }
         #anatomy-canvas { width: 100%; height: 100%; display: block; }
-        .viewer-controls { position: absolute; top: 10px; right: 10px; display: flex; gap: 8px; z-index: 10; }
-        .view-btn { padding: 8px 12px; background: white; border: 1px solid var(--border); border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.85rem; transition: all 0.2s; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        .view-btn:hover { background: var(--bg); }
-        .view-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
-        .loading-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.9); display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 16px; z-index: 20; }
-        .spinner { width: 50px; height: 50px; border: 4px solid var(--border); border-top-color: var(--primary); border-radius: 50%; animation: spin 1s linear infinite; }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        .muscle-tooltip-3d { position: absolute; background: var(--text); color: white; padding: 6px 12px; border-radius: 6px; font-size: 0.85rem; pointer-events: none; opacity: 0; transition: opacity 0.2s; z-index: 30; box-shadow: 0 4px 6px rgba(0,0,0,0.2); }
-        .selected-muscles-3d { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 12px; min-height: 32px; }
-        .muscle-tag-3d { background: var(--danger); color: white; padding: 6px 12px; border-radius: 16px; font-size: 0.85rem; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 6px; }
-        .muscle-tag-3d:hover { background: #b91c1c; transform: scale(1.05); }
+        .viewer-controls { position: absolute; top: 10px; left: 10px; display: flex; gap: 8px; z-index: 10; }
+        .view-btn { padding: 8px 12px; background: rgba(255,255,255,0.9); border: 1px solid var(--border); border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.85rem; transition: all 0.2s; }
+        .view-btn:hover { background: white; }
         .instruction-text { text-align: center; color: var(--text-light); font-size: 0.9rem; margin-bottom: 12px; }
+        .selected-muscles-3d { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 12px; min-height: 32px; }
+        .muscle-tag-3d { padding: 6px 12px; border-radius: 16px; font-size: 0.85rem; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 6px; color: white; font-weight: 600; }
+        .muscle-tag-3d:hover { transform: scale(1.05); opacity: 0.9; }
+        .loading-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(26,26,46,0.95); display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 16px; z-index: 20; color: white; }
+        .spinner { width: 50px; height: 50px; border: 4px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 1s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        
+        /* Muscle Group Colors */
+        .muscle-Quadriceps { background: #ff6b6b; }
+        .muscle-Hamstrings { background: #4ecdc4; }
+        .muscle-Calf { background: #45b7d1; }
+        .muscle-Gluteal { background: #f9ca24; color: #333; }
+        .muscle-Adductors { background: #a29bfe; }
+        .muscle-Hip { background: #f6e58d; color: #333; }
+        .muscle-Anterior { background: #5dade2; }
+        
         @media(max-width: 640px) { #anatomy-container { height: 350px; } }
     </style>
 </head>
@@ -156,14 +162,11 @@
                                 <div class="spinner"></div>
                                 <div>Loading 3D anatomy model...</div>
                             </div>
-                            <canvas id="anatomy-canvas"></canvas>
+                            <div id="anatomy-canvas"></div>
                             <div class="viewer-controls">
-                                <button type="button" class="view-btn active" data-view="front">Front</button>
-                                <button type="button" class="view-btn" data-view="back">Back</button>
-                                <button type="button" class="view-btn" data-view="left">Left</button>
-                                <button type="button" class="view-btn" data-view="right">Right</button>
+                                <button type="button" class="view-btn" onclick="resetView()">Reset View</button>
+                                <button type="button" class="view-btn" onclick="toggleRotation()">Auto Rotate</button>
                             </div>
-                            <div id="tooltip3d" class="muscle-tooltip-3d"></div>
                         </div>
                         
                         <div id="selectedMuscles3d" class="selected-muscles-3d"></div>
@@ -263,10 +266,31 @@
         let selectedMuscles = new Set();
         
         // Three.js variables
-        let scene, camera, renderer, controls, raycaster, mouse;
-        let model, muscleMaterials = {};
-        let originalColors = {};
-        const MODEL_URL = 'https://yourusername.github.io/anatomy-models/leg-muscles.glb'; // UPDATE THIS
+        let scene, camera, renderer, raycaster, mouse;
+        let muscles = [];
+        let autoRotate = false;
+        let isDragging = false;
+        let previousMousePosition = { x: 0, y: 0 };
+
+        // Muscle data
+        const muscleData = {
+            'Rectus Femoris': { color: 0xff6b6b, group: 'Quadriceps', description: 'Front thigh muscle' },
+            'Vastus Lateralis': { color: 0xff8787, group: 'Quadriceps', description: 'Outer thigh muscle' },
+            'Vastus Medialis': { color: 0xffa5a5, group: 'Quadriceps', description: 'Inner front thigh' },
+            'Vastus Intermedius': { color: 0xffc3c3, group: 'Quadriceps', description: 'Deep quadriceps' },
+            'Biceps Femoris': { color: 0x4ecdc4, group: 'Hamstrings', description: 'Outer back thigh' },
+            'Semitendinosus': { color: 0x6ee7df, group: 'Hamstrings', description: 'Inner back thigh' },
+            'Semimembranosus': { color: 0x8ef4ed, group: 'Hamstrings', description: 'Deep hamstring' },
+            'Gastrocnemius': { color: 0x45b7d1, group: 'Calf', description: 'Main calf muscle' },
+            'Soleus': { color: 0x6dc9e3, group: 'Calf', description: 'Deep calf muscle' },
+            'Tibialis Anterior': { color: 0x5dade2, group: 'Anterior', description: 'Front shin muscle' },
+            'Gluteus Maximus': { color: 0xf9ca24, group: 'Gluteal', description: 'Buttock muscle' },
+            'Tensor Fasciae Latae': { color: 0xf6e58d, group: 'Hip', description: 'Lateral hip muscle' },
+            'Sartorius': { color: 0xffbe76, group: 'Anterior', description: 'Longest muscle' },
+            'Adductor Magnus': { color: 0xa29bfe, group: 'Adductors', description: 'Inner thigh' },
+            'Adductor Longus': { color: 0xb8b0fd, group: 'Adductors', description: 'Superficial adductor' },
+            'Gracilis': { color: 0xc9c3fc, group: 'Adductors', description: 'Thin inner thigh' }
+        };
 
         document.addEventListener('DOMContentLoaded', () => {
             const now = new Date();
@@ -300,268 +324,216 @@
             if (tabName === 'analytics') updateCharts();
         }
 
-        // 🦵 3D Viewer Functions
+        // 3D Viewer Functions
         function init3DViewer() {
             const container = document.getElementById('anatomy-container');
-            const canvas = document.getElementById('anatomy-canvas');
+            const canvasContainer = document.getElementById('anatomy-canvas');
             
-            // Scene setup
             scene = new THREE.Scene();
-            scene.background = new THREE.Color(0xf0f9ff);
-            
-            // Camera
-            camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
-            camera.position.set(0, 0, 5);
-            
-            // Renderer
-            renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
-            renderer.setSize(container.clientWidth, container.clientHeight);
-            renderer.setPixelRatio(window.devicePixelRatio);
+            scene.background = new THREE.Color(0x1a1a2e);
+
+            camera = new THREE.PerspectiveCamera(75, container.clientWidth / 500, 0.1, 1000);
+            camera.position.set(0, 5, 15);
+
+            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(container.clientWidth, 500);
             renderer.shadowMap.enabled = true;
-            
-            // Controls
-            controls = new THREE.OrbitControls(camera, renderer.domElement);
-            controls.enableDamping = true;
-            controls.dampingFactor = 0.05;
-            controls.minDistance = 3;
-            controls.maxDistance = 10;
-            
-            // Lights
+            canvasContainer.appendChild(renderer.domElement);
+
             const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
             scene.add(ambientLight);
-            
+
             const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
-            directionalLight.position.set(5, 5, 5);
+            directionalLight.position.set(10, 10, 5);
             directionalLight.castShadow = true;
             scene.add(directionalLight);
-            
-            const directionalLight2 = new THREE.DirectionalLight(0xffffff, 0.4);
-            directionalLight2.position.set(-5, -5, -5);
-            scene.add(directionalLight2);
-            
-            // Raycaster for click detection
+
+            const backLight = new THREE.DirectionalLight(0xffffff, 0.4);
+            backLight.position.set(-10, 10, -5);
+            scene.add(backLight);
+
             raycaster = new THREE.Raycaster();
             mouse = new THREE.Vector2();
+
+            createLegModel();
+
+            renderer.domElement.addEventListener('click', onMouseClick, false);
+            renderer.domElement.addEventListener('mousemove', onMouseMove, false);
             
-            // Load model
-            loadModel();
-            
-            // Event listeners
-            window.addEventListener('resize', onWindowResize);
-            canvas.addEventListener('click', onMouseClick);
-            canvas.addEventListener('mousemove', onMouseMove);
-            
-            // View buttons
-            document.querySelectorAll('.view-btn').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-                    setView(btn.dataset.view);
-                });
+            renderer.domElement.addEventListener('mousedown', (e) => {
+                isDragging = true;
             });
-            
-            // Animation loop
+
+            renderer.domElement.addEventListener('mousemove', (e) => {
+                if (isDragging) {
+                    const deltaMove = {
+                        x: e.offsetX - previousMousePosition.x,
+                        y: e.offsetY - previousMousePosition.y
+                    };
+
+                    muscles.forEach(muscle => {
+                        muscle.rotation.y += deltaMove.x * 0.01;
+                        muscle.rotation.x += deltaMove.y * 0.01;
+                    });
+                }
+                previousMousePosition = { x: e.offsetX, y: e.offsetY };
+            });
+
+            renderer.domElement.addEventListener('mouseup', () => {
+                isDragging = false;
+            });
+
+            renderer.domElement.addEventListener('wheel', (e) => {
+                e.preventDefault();
+                camera.position.z += e.deltaY * 0.01;
+                camera.position.z = Math.max(8, Math.min(25, camera.position.z));
+            });
+
+            document.getElementById('loadingOverlay').style.display = 'none';
             animate();
         }
 
-        function loadModel() {
-            const loader = new THREE.GLTFLoader();
-            
-            loader.load(
-                MODEL_URL,
-                (gltf) => {
-                    model = gltf.scene;
-                    
-                    // Center and scale model
-                    const box = new THREE.Box3().setFromObject(model);
-                    const center = box.getCenter(new THREE.Vector3());
-                    const size = box.getSize(new THREE.Vector3());
-                    
-                    model.position.sub(center);
-                    const maxDim = Math.max(size.x, size.y, size.z);
-                    const scale = 3 / maxDim;
-                    model.scale.setScalar(scale);
-                    
-                    // Store original colors and set up materials
-                    model.traverse((child) => {
-                        if (child.isMesh) {
-                            child.castShadow = true;
-                            child.receiveShadow = true;
-                            
-                            // Store original color
-                            if (child.material) {
-                                originalColors[child.name] = child.material.color.clone();
-                                
-                                // Make muscles clickable
-                                child.userData.isMuscle = true;
-                                child.userData.muscleName = child.name || 'Unknown Muscle';
-                                
-                                // Store material reference
-                                muscleMaterials[child.uuid] = child.material;
-                            }
-                        }
-                    });
-                    
-                    scene.add(model);
-                    
-                    // Hide loading overlay
-                    document.getElementById('loadingOverlay').style.display = 'none';
-                },
-                (progress) => {
-                    const percent = (progress.loaded / progress.total * 100).toFixed(0);
-                    document.querySelector('#loadingOverlay div:last-child').textContent = `Loading... ${percent}%`;
-                },
-                (error) => {
-                    console.error('Error loading model:', error);
-                    document.querySelector('#loadingOverlay div:last-child').textContent = 'Error loading model. Using fallback.';
-                    createFallbackModel();
-                }
-            );
+        function createLegModel() {
+            createMuscle('Rectus Femoris', new THREE.BoxGeometry(1.2, 4, 1), { x: 0, y: 3, z: 0.3 });
+            createMuscle('Vastus Lateralis', new THREE.BoxGeometry(1.5, 4, 1.2), { x: -1.2, y: 3, z: 0 });
+            createMuscle('Vastus Medialis', new THREE.BoxGeometry(1.5, 4, 1.2), { x: 1.2, y: 3, z: 0 });
+            createMuscle('Vastus Intermedius', new THREE.BoxGeometry(1, 3.5, 0.8), { x: 0, y: 3, z: -0.2 });
+            createMuscle('Biceps Femoris', new THREE.BoxGeometry(1.2, 4.5, 1), { x: -1, y: 3, z: -1.5 });
+            createMuscle('Semitendinosus', new THREE.BoxGeometry(1, 4.5, 1), { x: 0.5, y: 3, z: -1.5 });
+            createMuscle('Semimembranosus', new THREE.BoxGeometry(1.2, 4, 1), { x: 0.8, y: 3.2, z: -1.8 });
+            createMuscle('Gastrocnemius', new THREE.CylinderGeometry(0.8, 0.6, 3, 16), { x: 0, y: -0.5, z: -0.5 });
+            createMuscle('Soleus', new THREE.CylinderGeometry(0.9, 0.7, 2.5, 16), { x: 0, y: -0.8, z: -0.8 });
+            createMuscle('Tibialis Anterior', new THREE.CylinderGeometry(0.5, 0.4, 3, 12), { x: 0.7, y: -0.5, z: 0.5 });
+            createMuscle('Gluteus Maximus', new THREE.BoxGeometry(2.5, 2, 2), { x: 0, y: 5.5, z: -1 });
+            createMuscle('Tensor Fasciae Latae', new THREE.BoxGeometry(0.8, 2, 0.8), { x: -1.5, y: 5, z: 0.5 });
+            createMuscle('Sartorius', new THREE.BoxGeometry(0.6, 5, 0.6), { x: 1, y: 2.5, z: 0.2 });
+            createMuscle('Adductor Magnus', new THREE.BoxGeometry(1.3, 4, 1.2), { x: 1.3, y: 3, z: -0.8 });
+            createMuscle('Adductor Longus', new THREE.BoxGeometry(1, 3.5, 0.9), { x: 1.5, y: 3.5, z: -0.3 });
+            createMuscle('Gracilis', new THREE.BoxGeometry(0.5, 4.5, 0.5), { x: 1.8, y: 2.5, z: -0.5 });
+
+            const boneMaterial = new THREE.MeshPhongMaterial({ color: 0xf5f5dc, transparent: true, opacity: 0.3 });
+            const femur = new THREE.Mesh(new THREE.CylinderGeometry(0.4, 0.4, 5, 16), boneMaterial);
+            femur.position.set(0, 3, -0.5);
+            scene.add(femur);
+
+            const tibia = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.3, 4, 16), boneMaterial);
+            tibia.position.set(0, -0.5, 0);
+            scene.add(tibia);
         }
 
-        function createFallbackModel() {
-            // Create simple geometry if model fails to load
-            const geometry = new THREE.BoxGeometry(1, 2, 0.5);
-            const material = new THREE.MeshStandardMaterial({ color: 0x2563eb });
+        function createMuscle(name, geometry, position) {
+            const data = muscleData[name];
+            const material = new THREE.MeshPhongMaterial({
+                color: data.color,
+                transparent: true,
+                opacity: 0.85,
+                shininess: 30
+            });
+
             const mesh = new THREE.Mesh(geometry, material);
-            mesh.userData.isMuscle = true;
-            mesh.userData.muscleName = 'Leg (Fallback)';
+            mesh.position.set(position.x, position.y, position.z);
+            mesh.name = name;
+            mesh.userData = data;
+            mesh.castShadow = true;
+            mesh.receiveShadow = true;
+
             scene.add(mesh);
-            
-            document.getElementById('loadingOverlay').style.display = 'none';
-        }
-
-        function setView(view) {
-            const duration = 500;
-            const startPos = camera.position.clone();
-            let endPos;
-            
-            switch(view) {
-                case 'front': endPos = new THREE.Vector3(0, 0, 5); break;
-                case 'back': endPos = new THREE.Vector3(0, 0, -5); break;
-                case 'left': endPos = new THREE.Vector3(-5, 0, 0); break;
-                case 'right': endPos = new THREE.Vector3(5, 0, 0); break;
-                default: endPos = new THREE.Vector3(0, 0, 5);
-            }
-            
-            // Simple animation
-            const startTime = Date.now();
-            function animateCamera() {
-                const elapsed = Date.now() - startTime;
-                const progress = Math.min(elapsed / duration, 1);
-                const easeProgress = 1 - Math.pow(1 - progress, 3); // Ease out cubic
-                
-                camera.position.lerpVectors(startPos, endPos, easeProgress);
-                controls.target.set(0, 0, 0);
-                controls.update();
-                
-                if (progress < 1) {
-                    requestAnimationFrame(animateCamera);
-                }
-            }
-            animateCamera();
-        }
-
-        function onMouseClick(event) {
-            if (!model) return;
-            
-            const container = document.getElementById('anatomy-container');
-            const rect = container.getBoundingClientRect();
-            
-            mouse.x = ((event.clientX - rect.left) / container.clientWidth) * 2 - 1;
-            mouse.y = -((event.clientY - rect.top) / container.clientHeight) * 2 + 1;
-            
-            raycaster.setFromCamera(mouse, camera);
-            const intersects = raycaster.intersectObjects(model.children, true);
-            
-            if (intersects.length > 0) {
-                const object = intersects[0].object;
-                if (object.userData.isMuscle) {
-                    toggleMuscleSelection(object);
-                }
-            }
+            muscles.push(mesh);
         }
 
         function onMouseMove(event) {
-            if (!model) return;
-            
-            const container = document.getElementById('anatomy-container');
-            const rect = container.getBoundingClientRect();
-            const tooltip = document.getElementById('tooltip3d');
-            
-            mouse.x = ((event.clientX - rect.left) / container.clientWidth) * 2 - 1;
-            mouse.y = -((event.clientY - rect.top) / container.clientHeight) * 2 + 1;
-            
+            const rect = renderer.domElement.getBoundingClientRect();
+            mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+            mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+
             raycaster.setFromCamera(mouse, camera);
-            const intersects = raycaster.intersectObjects(model.children, true);
-            
-            if (intersects.length > 0) {
-                const object = intersects[0].object;
-                if (object.userData.isMuscle) {
-                    tooltip.textContent = object.userData.muscleName;
-                    tooltip.style.opacity = '1';
-                    tooltip.style.left = (event.clientX - rect.left + 10) + 'px';
-                    tooltip.style.top = (event.clientY - rect.top - 30) + 'px';
-                    container.style.cursor = 'pointer';
-                    return;
+            const intersects = raycaster.intersectObjects(muscles);
+
+            muscles.forEach(muscle => {
+                if (!selectedMuscles.has(muscle.name)) {
+                    muscle.material.opacity = 0.85;
                 }
+            });
+
+            if (intersects.length > 0) {
+                const hoveredMuscle = intersects[0].object;
+                if (!selectedMuscles.has(hoveredMuscle.name)) {
+                    hoveredMuscle.material.opacity = 1;
+                }
+                renderer.domElement.style.cursor = 'pointer';
+            } else {
+                renderer.domElement.style.cursor = 'default';
             }
-            
-            tooltip.style.opacity = '0';
-            container.style.cursor = 'default';
         }
 
-        function toggleMuscleSelection(object) {
-            const muscleName = object.userData.muscleName;
-            const material = object.material;
+        function onMouseClick(event) {
+            if (isDragging) return;
             
-            if (selectedMuscles.has(muscleName)) {
-                // Deselect
-                selectedMuscles.delete(muscleName);
-                material.color.copy(originalColors[object.name] || new THREE.Color(0x2563eb));
-                material.emissive.setHex(0x000000);
-            } else {
-                // Select
-                selectedMuscles.add(muscleName);
-                material.color.setHex(0xef4444);
-                material.emissive.setHex(0x440000);
+            const rect = renderer.domElement.getBoundingClientRect();
+            mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+            mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+
+            raycaster.setFromCamera(mouse, camera);
+            const intersects = raycaster.intersectObjects(muscles);
+
+            if (intersects.length > 0) {
+                const clickedMuscle = intersects[0].object;
+                const muscleName = clickedMuscle.name;
+
+                if (selectedMuscles.has(muscleName)) {
+                    selectedMuscles.delete(muscleName);
+                    clickedMuscle.material.opacity = 0.85;
+                    clickedMuscle.material.emissive.setHex(0x000000);
+                } else {
+                    selectedMuscles.add(muscleName);
+                    clickedMuscle.material.opacity = 1;
+                    clickedMuscle.material.emissive.setHex(0x444444);
+                }
+                
+                updateSelectedTags3D();
             }
-            
-            updateSelectedTags3D();
         }
 
         function updateSelectedTags3D() {
             const container = document.getElementById('selectedMuscles3d');
-            container.innerHTML = Array.from(selectedMuscles).map(m => 
-                `<span class="muscle-tag-3d" onclick="deselectMuscle3D('${m}')">${m} ✕</span>`
-            ).join('');
+            container.innerHTML = Array.from(selectedMuscles).map(m => {
+                const data = muscleData[m];
+                const groupClass = `muscle-${data.group}`;
+                return `<span class="muscle-tag-3d ${groupClass}" onclick="deselectMuscle3D('${m}')">${m} ✕</span>`;
+            }).join('');
             document.getElementById('selectedMuscles').value = Array.from(selectedMuscles).join(',');
         }
 
         window.deselectMuscle3D = function(muscleName) {
-            if (!model) return;
-            
-            model.traverse((child) => {
-                if (child.isMesh && child.userData.muscleName === muscleName) {
-                    child.material.color.copy(originalColors[child.name] || new THREE.Color(0x2563eb));
-                    child.material.emissive.setHex(0x000000);
-                }
-            });
-            
-            selectedMuscles.delete(muscleName);
-            updateSelectedTags3D();
+            const muscle = muscles.find(m => m.name === muscleName);
+            if (muscle) {
+                selectedMuscles.delete(muscleName);
+                muscle.material.opacity = 0.85;
+                muscle.material.emissive.setHex(0x000000);
+                updateSelectedTags3D();
+            }
         };
 
-        function onWindowResize() {
-            const container = document.getElementById('anatomy-container');
-            camera.aspect = container.clientWidth / container.clientHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(container.clientWidth, container.clientHeight);
+        function resetView() {
+            camera.position.set(0, 5, 15);
+            muscles.forEach(muscle => {
+                muscle.rotation.set(0, 0, 0);
+            });
+        }
+
+        function toggleRotation() {
+            autoRotate = !autoRotate;
         }
 
         function animate() {
             requestAnimationFrame(animate);
-            controls.update();
+            
+            if (autoRotate && !isDragging) {
+                muscles.forEach(muscle => {
+                    muscle.rotation.y += 0.005;
+                });
+            }
+            
             renderer.render(scene, camera);
         }
 
@@ -593,15 +565,10 @@
             now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
             document.getElementById('date').value = now.toISOString().slice(0, 16);
             
-            // Reset muscle selection
-            if (model) {
-                model.traverse((child) => {
-                    if (child.isMesh && child.material) {
-                        child.material.color.copy(originalColors[child.name] || new THREE.Color(0x2563eb));
-                        child.material.emissive.setHex(0x000000);
-                    }
-                });
-            }
+            muscles.forEach(muscle => {
+                muscle.material.opacity = 0.85;
+                muscle.material.emissive.setHex(0x000000);
+            });
             selectedMuscles.clear();
             updateSelectedTags3D();
 
@@ -663,9 +630,9 @@
 
         function initCharts() {
             const opts = (label) => ({ responsive: true, maintainAspectRatio: false, plugins: { legend: {display:false} }, scales: { y: { beginAtZero: true, title: {display:true, text:label} }, x: { title: {display:true, text:'Date'} } } });
-            charts.pain = new Chart(document.getElementById('painChart'), { type: 'line', data: { labels: [], datasets: [] }, options: opts('Pain Level') });
-            charts.onset = new Chart(document.getElementById('onsetChart'), { type: 'line', data: { labels: [], datasets: [] }, options: opts('Onset Time (min)') });
-            charts.recovery = new Chart(document.getElementById('recoveryChart'), { type: 'line', data: { labels: [], datasets: [] }, options: opts('Recovery Time (min)') });
+            charts.pain = new Chart(document.getElementById('painChart'), { type: 'line',  { labels: [], datasets: [] }, options: opts('Pain Level') });
+            charts.onset = new Chart(document.getElementById('onsetChart'), { type: 'line',  { labels: [], datasets: [] }, options: opts('Onset Time (min)') });
+            charts.recovery = new Chart(document.getElementById('recoveryChart'), { type: 'line',  { labels: [], datasets: [] }, options: opts('Recovery Time (min)') });
             updateCharts();
         }
 
@@ -674,11 +641,11 @@
             const labels = sorted.map(e => new Date(e.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }));
             const update = (chart, dataArr, color) => {
                 chart.data.labels = labels;
-                chart.data.datasets = [{ label: 'Value', data: dataArr, borderColor: color, backgroundColor: color+'20', fill: true, tension: 0.4 }];
+                chart.data.datasets = [{ label: 'Value',  dataArr, borderColor: color, backgroundColor: color+'20', fill: true, tension: 0.4 }];
                 chart.update();
             };
             if(painEntries.length === 0) {
-                Object.values(charts).forEach(c => { c.data.labels = ['No data']; c.data.datasets = [{ data: [0], borderColor: '#cbd5e1', tension: 0.4 }]; c.update(); });
+                Object.values(charts).forEach(c => { c.data.labels = ['No data']; c.data.datasets = [{  [0], borderColor: '#cbd5e1', tension: 0.4 }]; c.update(); });
                 return;
             }
             update(charts.pain, sorted.map(e=>e.painLevel), '#ef4444');
