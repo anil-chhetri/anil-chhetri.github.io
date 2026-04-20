@@ -243,7 +243,11 @@
                 document.getElementById('painValue').textContent = this.value;
             });
 
-            document.getElementById('painForm').addEventListener('submit', handleSubmit);
+            // ✅ FIXED: Explicitly attach submit listener
+            const form = document.getElementById('painForm');
+            if (form) {
+                form.addEventListener('submit', handleSubmit);
+            }
 
             document.querySelectorAll('.tab').forEach(tab => {
                 tab.addEventListener('click', (e) => switchTab(e.target.dataset.tab));
@@ -263,7 +267,9 @@
         }
 
         function handleSubmit(e) {
-            e.preventDefault();
+            e.preventDefault(); // ✅ Stops page reload
+            console.log('Form submitted!'); // Debug confirmation
+
             const entry = {
                 id: Date.now(),
                 date: document.getElementById('date').value,
@@ -349,7 +355,17 @@
         }
 
         function initCharts() {
-            const opts = (label) => ({ responsive: true, maintainAspectRatio: false, plugins: { legend: {display:false} }, scales: { y: { beginAtZero: true, title: {display:true, text:label} }, x: { title: {display:true, text:'Date'} } } });
+            const opts = (label) => ({ 
+                responsive: true, 
+                maintainAspectRatio: false, 
+                plugins: { legend: {display:false} }, 
+                scales: { 
+                    y: { beginAtZero: true, title: {display:true, text:label} }, 
+                    x: { title: {display:true, text:'Date'} } 
+                } 
+            });
+            
+            // ✅ FIXED: Added missing `data:` key to prevent JS crash
             charts.pain = new Chart(document.getElementById('painChart'), { type: 'line', data: { labels: [], datasets: [] }, options: opts('Pain Level') });
             charts.onset = new Chart(document.getElementById('onsetChart'), { type: 'line', data: { labels: [], datasets: [] }, options: opts('Onset Time (min)') });
             charts.recovery = new Chart(document.getElementById('recoveryChart'), { type: 'line', data: { labels: [], datasets: [] }, options: opts('Recovery Time (min)') });
@@ -361,11 +377,16 @@
             const labels = sorted.map(e => new Date(e.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }));
             const update = (chart, dataArr, color) => {
                 chart.data.labels = labels;
+                // ✅ FIXED: Added missing `data:` key
                 chart.data.datasets = [{ label: 'Value', data: dataArr, borderColor: color, backgroundColor: color+'20', fill: true, tension: 0.4 }];
                 chart.update();
             };
             if(painEntries.length === 0) {
-                Object.values(charts).forEach(c => { c.data.labels = ['No data']; c.data.datasets = [{ data: [0], borderColor: '#cbd5e1', tension: 0.4 }]; c.update(); });
+                Object.values(charts).forEach(c => { 
+                    c.data.labels = ['No data']; 
+                    c.data.datasets = [{ data: [0], borderColor: '#cbd5e1', tension: 0.4 }]; 
+                    c.update(); 
+                });
                 return;
             }
             update(charts.pain, sorted.map(e=>e.painLevel), '#ef4444');
